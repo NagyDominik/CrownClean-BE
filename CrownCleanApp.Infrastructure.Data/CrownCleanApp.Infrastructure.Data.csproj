@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CrownCleanApp.Core.Entity\CrownCleanApp.Core.Entity.csproj" />
+    <ProjectReference Include="..\CrownCleanApp.Core\CrownCleanApp.Core.csproj" />
+  </ItemGroup>
+
+</Project>
