@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F8E56653-2F3E-499D-A11A-C8F2FC87734B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrownCleanApp.Core", "CrownCleanApp.Core\CrownCleanApp.Core.csproj", "{D5F13A38-2D9A-4841-A22B-AB15A894AC9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.Core", "CrownCleanApp.Core\CrownCleanApp.Core.csproj", "{D5F13A38-2D9A-4841-A22B-AB15A894AC9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrownCleanApp.Core.Entity", "CrownCleanApp.Core.Entity\CrownCleanApp.Core.Entity.csproj", "{5B0827AC-93AF-4E9B-988D-8488A7D79290}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.Core.Entity", "CrownCleanApp.Core.Entity\CrownCleanApp.Core.Entity.csproj", "{5B0827AC-93AF-4E9B-988D-8488A7D79290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrownCleanApp.Infrastructure.Data", "CrownCleanApp.Infrastructure.Data\CrownCleanApp.Infrastructure.Data.csproj", "{287E49E2-F3D9-40EE-8797-7294F8E99F50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.Infrastructure.Data", "CrownCleanApp.Infrastructure.Data\CrownCleanApp.Infrastructure.Data.csproj", "{287E49E2-F3D9-40EE-8797-7294F8E99F50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrownCleanApp.RestAPI", "CrownCleanApp.RestAPI\CrownCleanApp.RestAPI.csproj", "{8CDBB01A-7731-410F-BCB2-592674BE60A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.RestAPI", "CrownCleanApp.RestAPI\CrownCleanApp.RestAPI.csproj", "{8CDBB01A-7731-410F-BCB2-592674BE60A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E039E343-6AE2-449D-8015-79B0B9F5F45E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8CDBB01A-7731-410F-BCB2-592674BE60A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CDBB01A-7731-410F-BCB2-592674BE60A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CDBB01A-7731-410F-BCB2-592674BE60A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E039E343-6AE2-449D-8015-79B0B9F5F45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E039E343-6AE2-449D-8015-79B0B9F5F45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E039E343-6AE2-449D-8015-79B0B9F5F45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E039E343-6AE2-449D-8015-79B0B9F5F45E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,7 +44,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
         public User Update(User user)
         {
             _ctx.Attach(user).State = EntityState.Modified;
-            _ctx.Entry(user).Reference(u => u.Orders).IsModified = true;
+            //_ctx.Entry(user).Reference(u => u.Orders).IsModified = true;
             _ctx.SaveChanges();
             return user;
         }
