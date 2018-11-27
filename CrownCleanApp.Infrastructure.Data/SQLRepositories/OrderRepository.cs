@@ -6,36 +6,36 @@ using System.Text;
 
 namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
 {
-    public class VehicleRepository : IVehicleRepository
+    public class OrderRepository : IOrderRepository
     {
         readonly CrownCleanAppContext _ctx;
 
-        public VehicleRepository(CrownCleanAppContext ctx)
+        public OrderRepository(CrownCleanAppContext ctx)
         {
             _ctx = ctx;
         }
 
-        public Vehicle Create()
+        public Order Create()
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle Delete(int id)
+        public Order Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Vehicle> ReadAll()
+        public IEnumerable<Order> ReadAll()
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle ReadByID(int id)
+        public Order ReadByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle Update(Vehicle vehicle)
+        public Order Update(Order order)
         {
             throw new NotImplementedException();
         }

@@ -9,29 +9,29 @@ namespace CrownCleanApp.RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        // GET: api/Customers
+        // GET: api/Users
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Customers/5
+        // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/Customers
+        // POST: api/Users
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Users/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

@@ -6,36 +6,41 @@ using CrownCleanApp.Core.Entity;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
 {
-    public class VehicleService : IVehicleService
+    public class OrderService : IOrderService
     {
-        readonly IVehicleRepository _repo;
+        readonly IOrderRepository _repo;
 
-        public VehicleService(IVehicleRepository repo)
+        public OrderService(IOrderRepository repo)
         {
             _repo = repo;
         }
 
-        public Vehicle AddVehicle(Vehicle vehicle)
+        public Order AddOrder(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle DeleteVehicle(int id)
+        public Order ApproveOrder(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public List<Vehicle> GetAllVehicles()
+        public Order DeleteOrder(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle GetVehicleByID(int id)
+        public List<Order> GetAllOrders()
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle UpdateVehicle(Vehicle vehicle)
+        public Order GetOrderByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Order UpdateOrder(Order order)
         {
             throw new NotImplementedException();
         }

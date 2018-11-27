@@ -3,42 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrownCleanApp.Core.ApplicationService
+namespace CrownCleanApp.Core.DomainService
 {
-    public interface IVehicleService
+    public interface IUserRepository
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vehicle"></param>
         /// <returns></returns>
-        Vehicle AddVehicle(Vehicle vehicle);
+        User Create();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Vehicle> GetAllVehicles();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Vehicle GetVehicleByID(int id);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <returns></returns>
-        Vehicle UpdateVehicle(Vehicle vehicle);
+        IEnumerable<User> ReadAll();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Vehicle DeleteVehicle(int id);
+        User ReadByID(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        User Update(User user);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        User Delete(int id);
     }
 }
