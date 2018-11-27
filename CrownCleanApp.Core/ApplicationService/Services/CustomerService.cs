@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
 {
-    public class VehicleService : IVehicleService
+    public class CustomerService : ICustomerService
     {
     }
 }

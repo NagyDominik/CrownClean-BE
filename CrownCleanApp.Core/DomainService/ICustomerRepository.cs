@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrownCleanApp.Core.ApplicationService
+namespace CrownCleanApp.Core.DomainService
 {
-    public interface IVehicleService
+    public interface ICustomerRepository
     {
     }
 }

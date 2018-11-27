@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
 {
-    public class VehicleRepository : IVehicleRepository
+    public class CustomerRepository : ICustomerRepository
     {
     }
 }
