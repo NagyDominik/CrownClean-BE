@@ -3,42 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrownCleanApp.Core.ApplicationService
+namespace CrownCleanApp.Core.DomainService
 {
-    public interface IVehicleService
+    public interface IOrderRepository
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vehicle"></param>
         /// <returns></returns>
-        Vehicle AddVehicle(Vehicle vehicle);
+        Order Create();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Vehicle> GetAllVehicles();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Vehicle GetVehicleByID(int id);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <returns></returns>
-        Vehicle UpdateVehicle(Vehicle vehicle);
+        IEnumerable<Order> ReadAll();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Vehicle DeleteVehicle(int id);
+        Order ReadByID(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Order Update(Order order);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Order Delete(int id);
     }
 }

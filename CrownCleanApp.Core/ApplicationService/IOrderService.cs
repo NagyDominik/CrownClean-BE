@@ -5,40 +5,47 @@ using System.Text;
 
 namespace CrownCleanApp.Core.ApplicationService
 {
-    public interface IVehicleService
+    public interface IOrderService
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vehicle"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        Vehicle AddVehicle(Vehicle vehicle);
+        Order AddOrder(Order order);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Vehicle> GetAllVehicles();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Vehicle GetVehicleByID(int id);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <returns></returns>
-        Vehicle UpdateVehicle(Vehicle vehicle);
+        List<Order> GetAllOrders();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Vehicle DeleteVehicle(int id);
+        Order GetOrderByID(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Order UpdateOrder(Order order);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Order ApproveOrder(Order order);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Order DeleteOrder(int id);
     }
 }

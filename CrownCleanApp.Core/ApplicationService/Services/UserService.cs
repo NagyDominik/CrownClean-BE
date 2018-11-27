@@ -6,36 +6,46 @@ using CrownCleanApp.Core.Entity;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
 {
-    public class VehicleService : IVehicleService
+    public class UserService : IUserService
     {
-        readonly IVehicleRepository _repo;
+        readonly IUserRepository _repo;
 
-        public VehicleService(IVehicleRepository repo)
+        public UserService(IUserRepository repo)
         {
             _repo = repo;
         }
 
-        public Vehicle AddVehicle(Vehicle vehicle)
+        public User AddUser(User user)
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle DeleteVehicle(int id)
+        public User ApproveUser(User user)
         {
             throw new NotImplementedException();
         }
 
-        public List<Vehicle> GetAllVehicles()
+        public User DeleteUser(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle GetVehicleByID(int id)
+        public List<User> GetAllUsers()
         {
             throw new NotImplementedException();
         }
 
-        public Vehicle UpdateVehicle(Vehicle vehicle)
+        public User GetUserByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User UpdateUserPassword(User user)
         {
             throw new NotImplementedException();
         }
