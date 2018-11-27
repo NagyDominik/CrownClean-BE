@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownCleanApp.RestAPI", "CrownCleanApp.RestAPI\CrownCleanApp.RestAPI.csproj", "{8CDBB01A-7731-410F-BCB2-592674BE60A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E039E343-6AE2-449D-8015-79B0B9F5F45E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCore", "UnitTests\TestCore.csproj", "{E039E343-6AE2-449D-8015-79B0B9F5F45E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -38,11 +38,15 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             {
                 throw new InvalidDataException("Cannot add a user without an email address!");
             }
-            if (user.IsCompany && !string.IsNullOrEmpty(user.TaxNumber))
+            if (user.Addresses == null || user.Addresses.Count < 1)
+            {
+                throw new InvalidDataException("Cannot add a user without at least one address!");
+            }
+            if (!user.IsCompany && !string.IsNullOrEmpty(user.TaxNumber))
             {
                 throw new InvalidDataException("Cannot add a user with a tax number! Did you mean to add a company instead?");
             }
-            if (!user.IsCompany && string.IsNullOrEmpty(user.TaxNumber))
+            if (user.IsCompany && string.IsNullOrEmpty(user.TaxNumber))
             {
                 throw new InvalidDataException("Cannot add a company without tax number! Did you mean to add an individual customer instead?");
             }
