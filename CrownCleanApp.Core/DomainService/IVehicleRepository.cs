@@ -11,7 +11,7 @@ namespace CrownCleanApp.Core.DomainService
         /// 
         /// </summary>
         /// <returns></returns>
-        Vehicle Create();
+        Vehicle Create(Vehicle vehicle);
 
         /// <summary>
         /// 

@@ -11,7 +11,7 @@ namespace CrownCleanApp.Core.DomainService
         /// 
         /// </summary>
         /// <returns></returns>
-        Order Create();
+        Order Create(Order order);
 
         /// <summary>
         /// 

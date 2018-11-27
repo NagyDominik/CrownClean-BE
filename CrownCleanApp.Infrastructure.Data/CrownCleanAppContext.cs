@@ -8,10 +8,7 @@ namespace CrownCleanApp.Infrastructure.Data
 {
     public class CrownCleanAppContext : DbContext
     {
-        public CrownCleanAppContext(DbContextOptions<CrownCleanAppContext> opt) : base(opt)
-        {
-
-        }
+        public CrownCleanAppContext(DbContextOptions<CrownCleanAppContext> opt) : base(opt) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,7 +26,5 @@ namespace CrownCleanApp.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Order> Orders { get; set; }
-
-
     }
 }
