@@ -20,6 +20,6 @@ namespace CrownCleanApp.Core.Entity
         public List<Order> Orders { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt{ get; set; }
-        public bool isApproved { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

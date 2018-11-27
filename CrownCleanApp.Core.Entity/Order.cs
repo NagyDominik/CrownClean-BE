@@ -13,7 +13,7 @@ namespace CrownCleanApp.Core.Entity
         public DateTime ApproveDate { get; set; }
         public string Services { get; set; }
         public string Description { get; set; }
-        public bool atAddress { get; set; }
-        public bool isApproved { get; set; }
+        public bool AtAddress { get; set; }
+        public bool IsApproved { get; set; }
     }
 }
