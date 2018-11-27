@@ -1,7 +1,9 @@
 ﻿using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
@@ -15,29 +17,36 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             _ctx = ctx;
         }
 
-        public Order Create()
+        public Order Create(Order order)
         {
-            throw new NotImplementedException();
+            _ctx.Attach(order).State = EntityState.Added;
+            _ctx.SaveChanges();
+            return order;
         }
 
         public Order Delete(int id)
         {
-            throw new NotImplementedException();
+            Order order = _ctx.Orders.Remove(new Order { ID = id }).Entity;
+            _ctx.SaveChanges();
+            return order;
         }
 
         public IEnumerable<Order> ReadAll()
         {
-            throw new NotImplementedException();
+            return _ctx.Orders;
         }
 
         public Order ReadByID(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Orders.Include(o => o.User).FirstOrDefault(o => o.ID == id);
         }
 
         public Order Update(Order order)
         {
-            throw new NotImplementedException();
+            _ctx.Attach(order).State = EntityState.Modified;
+            _ctx.Entry(order).Reference(o => o.User).IsModified = true;
+            _ctx.SaveChanges();
+            return order;
         }
     }
 }
