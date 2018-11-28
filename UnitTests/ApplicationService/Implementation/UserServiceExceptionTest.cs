@@ -12,19 +12,49 @@ using System.IO;
 namespace TestCore.ApplicationService.Implementation
 {
     /// <summary>
-    /// Thi class is intended to test the conditions, in which the UserService should thréow an exception.
+    /// This class is intended to test the conditions, in which the UserService should thréow an exception.
     /// </summary>
     public class UserExceptionTests
     {
+        #region UserTests
+
         #region UserAddTests
+
+        [Fact]
+        public void CreateUserWithNegativeIdShouldThrowException()
+        {
+            User user = new User() {
+                FirstName = "Test",
+                LastName = "Test",
+                Addresses = new List<string>() { "Address1" },
+                Email = "em@ail.dk",
+                PhoneNumber = "+4552521130",
+                IsAdmin = false,
+                IsCompany = false
+            };
+
+            Exception e = Assert.Throws<InvalidDataException>(() => user.ID = -1);
+            Assert.Equal("Cannot add a negative ID!", e.Message);
+        }
+
+        [Fact]
+        public void AddNullUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = null;
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
+            Assert.Equal("Input is null!", e.Message);
+        }
+
         [Fact]
         public void AddCustomerWithIDThrowsException()
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 ID = 1,
                 FirstName = "Test",
                 LastName = "Test",
@@ -44,8 +74,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 LastName = "Test",
                 Addresses = new List<string>() { "Address1" },
                 Email = "em@ail.dk",
@@ -64,8 +93,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 Addresses = new List<string>() { "Address1" },
                 Email = "em@ail.dk",
@@ -84,8 +112,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 LastName = "Test",
                 Addresses = new List<string>() { "Address1" },
@@ -104,8 +131,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 LastName = "Test",
                 Addresses = new List<string>() { "Address1" },
@@ -124,8 +150,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "em@ail.dk",
@@ -144,8 +169,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "em@ail.dk",
@@ -166,8 +190,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
+            User newUser = new User() {
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "em@ail.dk",
@@ -182,6 +205,46 @@ namespace TestCore.ApplicationService.Implementation
         }
 
         #endregion
+
+        #region UserApproveTests
+
+        [Fact]
+        public void ApproveNullUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = null;
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Assert.Equal("Input is null!", e.Message);
+        }
+
+        [Fact]
+        public void ApproveAlreadyApprovedUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = new User() {
+                FirstName = "Test",
+                LastName = "Test",
+                Email = "em@ail.dk",
+                PhoneNumber = "+4552521130",
+                Addresses = new List<string>() { "Address1" },
+                IsAdmin = false,
+                IsCompany = false,
+                IsApproved = true
+            };
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Assert.Equal("User is already approved!", e.Message);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region OrderTests
 
         #region OrderAddTests
 
@@ -206,7 +269,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IOrderRepository>();
             IOrderService orderService = new OrderService(moqRep.Object);
 
-            Order newOrder = new Order() { User = new User() { }, Vehicle = new Vehicle() { ID = 1} };
+            Order newOrder = new Order() { User = new User() { }, Vehicle = new Vehicle() { ID = 1 } };
 
             Exception e = Assert.Throws<InvalidDataException>(() => orderService.AddOrder(newOrder));
             Assert.Equal("Cannot add order without user!", e.Message);
@@ -220,7 +283,7 @@ namespace TestCore.ApplicationService.Implementation
 
             Order newOrder = new Order() {
                 User = new User() { ID = 1 },
-                Vehicle = new Vehicle() { }                
+                Vehicle = new Vehicle() { }
             };
 
             Exception e = Assert.Throws<InvalidDataException>(() => orderService.AddOrder(newOrder));
@@ -309,6 +372,8 @@ namespace TestCore.ApplicationService.Implementation
             Exception e = Assert.Throws<InvalidDataException>(() => orderService.GetOrderByID(0));
             Assert.Equal("Cannot get order by ID without ID!", e.Message);
         }
+
+        #endregion
 
         #endregion
     }

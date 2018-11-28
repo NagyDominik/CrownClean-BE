@@ -1,158 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using Moq;
-using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.ApplicationService;
 using CrownCleanApp.Core.ApplicationService.Services;
+using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
-using System.IO;
+using System.Collections;
 
 namespace TestCore.ApplicationService.Implementation
 {
-    public class UserExceptionTests
+    /// <summary>
+    /// This class is intended to test the normal operation of the UserService.
+    /// </summary>
+    public class UserServiceTest
     {
-        #region UserAddTests
-        [Fact]
-        public void AddCustomerWithIDThrowsException()
+        #region MockData
+
+        class IndividualUserTestData : IEnumerable<Object[]>
         {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User() { ID = 1 };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add user with existing ID!", e.Message);
-        }
-
-        [Fact]
-        public void AddCustomerWithoutFirstNameThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User() { LastName = "Test"};
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user without first name!", e.Message);
-        }
-
-        [Fact]
-        public void AddCustomerWithoutLastNameThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User() { FirstName = "Test" };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user without last name!", e.Message);
-        }
-
-        [Fact]
-        public void AddCustomerWithoutPhoneNumberThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User()
+            readonly User u1 = new User()
             {
                 FirstName = "Test",
                 LastName = "Test",
-                Addresses = new List<string>() { "Address1" },
-                Email = "em@ail.dk",
-                IsAdmin = false,
-                IsCompany = false
-            };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user without a phone number!", e.Message);
-        }
-
-        [Fact]
-        public void AddCustomerWithoutEmailThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User()
-            {
-                FirstName = "Test",
-                LastName = "Test",
-                Addresses = new List<string>() { "Address1" },
-                PhoneNumber = "+4552521130",
-                IsAdmin = false,
-                IsCompany = false
-            };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user without an email address!", e.Message);
-        }
-
-        [Fact]
-        public void AddCustomerWithoutAdressesThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User()
-            {
-                FirstName = "Test",
-                LastName = "Test",
+                Addresses = new List<string>() { "Test Str. 4" },
                 Email = "em@ail.dk",
                 PhoneNumber = "+4552521130",
-                IsAdmin = false,
-                IsCompany = false
-            };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user without at least one address!", e.Message);
-        }
-
-        [Fact]
-        public void AddIndividualCustomerWithTaxNumberThrowsException()
-        {
-            var moqRep = new Mock<IUserRepository>();
-            IUserService userService = new UserService(moqRep.Object);
-
-            User newUser = new User()
-            {
-                FirstName = "Test",
-                LastName = "Test",
-                Email = "em@ail.dk",
-                PhoneNumber = "+4552521130",
-                Addresses = new List<string>() { "Address1" },
-                IsAdmin = false,
                 IsCompany = false,
-                TaxNumber = "1111-2222-3333-4444"
+                IsAdmin = false,
+                IsApproved = false
             };
 
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a user with a tax number! Did you mean to add a company instead?", e.Message);
+           readonly User u2 = new User()
+            {
+                FirstName = "Tester",
+                LastName = "McTested",
+                Addresses = new List<string>() { "Test Str. 4", "New Address 2" },
+                Email = "e@mail.dk",
+                PhoneNumber = "+4552521131",
+                IsCompany = false,
+                IsAdmin = false,
+                IsApproved = false
+           };
+
+            readonly User u3 = new User()
+            {
+                FirstName = "Tester",
+                LastName = "McTested Jr.",
+                Addresses = new List<string>() { "Test Str. 4", "New Address 2", "Empty str." },
+                Email = "ema@il.dk",
+                PhoneNumber = "+4552521132",
+                IsCompany = false,
+                IsAdmin = false,
+                IsApproved = false
+            };
+
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { u1 };
+                yield return new object[] { u2 };
+                yield return new object[] { u3 };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        [Fact]
-        public void AddCorporateCustomerWithoutTaxNumberThrowsException()
+        class CorporateUserTestData : IEnumerable<Object[]>
+        {
+            readonly User u1 = new User()
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Addresses = new List<string>() { "Test Company Str. 4" },
+                Email = "em@ail.dk",
+                PhoneNumber = "+4552521130",
+                IsCompany = true,
+                IsAdmin = false,
+                TaxNumber = "111111-8-9"
+            };
+
+            readonly User u2 = new User()
+            {
+                FirstName = "Tester",
+                LastName = "McTested",
+                Addresses = new List<string>() { "Test Str. 4", "New Address 2" },
+                Email = "e@mail.dk",
+                PhoneNumber = "+4552521131",
+                IsAdmin = true,
+                IsCompany = true,
+                TaxNumber = "111111-4-9"
+            };
+
+            readonly User u3 = new User()
+            {
+                FirstName = "Tester",
+                LastName = "McTested Jr.",
+                Addresses = new List<string>() { "Test Str. 4", "New Address 2", "Empty str." },
+                Email = "ema@il.dk",
+                PhoneNumber = "+4552521132",
+                IsCompany = true,
+                IsAdmin = false,
+                TaxNumber = "114881-8-9"
+            };
+
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { u1 };
+                yield return new object[] { u2 };
+                yield return new object[] { u3 };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+        #endregion
+
+        #region CreateUserTests
+
+        [Theory]
+        [ClassData(typeof(IndividualUserTestData))]
+        [ClassData(typeof(CorporateUserTestData))]
+        public void AddlUser(User user)
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User()
-            {
-                FirstName = "Test",
-                LastName = "Test",
-                Email = "em@ail.dk",
-                PhoneNumber = "+4552521130",
-                Addresses = new List<string>() { "Address1" },
-                IsAdmin = false,
-                IsCompany = true
-            };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
-            Assert.Equal("Cannot add a company without tax number! Did you mean to add an individual customer instead?", e.Message);
+            userService.AddUser(user);
+            moqRep.Verify(x => x.Create(user), Times.Once);
         }
 
+        #endregion
+
+        #region ApproveUserTest
+
+        [Theory]
+        [ClassData(typeof(IndividualUserTestData))]
+        [ClassData(typeof(CorporateUserTestData))]
+        public void UserApproveTest(User user)
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            userService.ApproveUser(user);
+            moqRep.Verify(x => x.Update(user), Times.Once);
+            Assert.True(user.IsApproved);
+        }
+
+        #endregion
+
+        #region DeleteTest
+        [Theory]
+        [ClassData(typeof(IndividualUserTestData))]
+        [ClassData(typeof(CorporateUserTestData))]
+        public void UserDeleteTest(User user)
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            user.ID = 1;
+
+            userService.DeleteUser(1);
+            moqRep.Verify(x => x.Delete(1), Times.Once);
+        }
         #endregion
     }
 }

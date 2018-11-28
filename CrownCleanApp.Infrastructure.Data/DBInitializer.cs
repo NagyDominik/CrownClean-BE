@@ -18,7 +18,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 FirstName = "Test",
                 LastName = "Testenson",
                 IsAdmin = false,
-                isApproved = true,
+                IsApproved = true,
                 PhoneNumber = "+45558587489",
                 IsCompany = false
             };
