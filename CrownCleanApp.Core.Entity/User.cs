@@ -14,7 +14,7 @@ namespace CrownCleanApp.Core.Entity
             {
                 if (value < 0)
                 {
-                    throw new InvalidDataException("Cannot add a negative ID");
+                    throw new InvalidDataException("Cannot add a negative ID!");
                 }
                 else
                 {

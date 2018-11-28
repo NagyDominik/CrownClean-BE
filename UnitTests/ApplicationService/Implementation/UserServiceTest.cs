@@ -27,7 +27,8 @@ namespace TestCore.ApplicationService.Implementation
                 Email = "em@ail.dk",
                 PhoneNumber = "+4552521130",
                 IsCompany = false,
-                IsAdmin = false
+                IsAdmin = false,
+                IsApproved = false
             };
 
            readonly User u2 = new User()
@@ -38,8 +39,9 @@ namespace TestCore.ApplicationService.Implementation
                 Email = "e@mail.dk",
                 PhoneNumber = "+4552521131",
                 IsCompany = false,
-                IsAdmin = false
-            };
+                IsAdmin = false,
+                IsApproved = false
+           };
 
             readonly User u3 = new User()
             {
@@ -49,7 +51,8 @@ namespace TestCore.ApplicationService.Implementation
                 Email = "ema@il.dk",
                 PhoneNumber = "+4552521132",
                 IsCompany = false,
-                IsAdmin = false
+                IsAdmin = false,
+                IsApproved = false
             };
 
             public IEnumerator<object[]> GetEnumerator()
@@ -116,7 +119,8 @@ namespace TestCore.ApplicationService.Implementation
 
         [Theory]
         [ClassData(typeof(IndividualUserTestData))]
-        public void AddIndividualUser(User user)
+        [ClassData(typeof(CorporateUserTestData))]
+        public void AddlUser(User user)
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
@@ -124,18 +128,40 @@ namespace TestCore.ApplicationService.Implementation
             userService.AddUser(user);
             moqRep.Verify(x => x.Create(user), Times.Once);
         }
+
+        #endregion
+
+        #region ApproveUserTest
 
         [Theory]
+        [ClassData(typeof(IndividualUserTestData))]
         [ClassData(typeof(CorporateUserTestData))]
-        public void AddCorporateUser(User user)
+        public void UserApproveTest(User user)
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            userService.AddUser(user);
-            moqRep.Verify(x => x.Create(user), Times.Once);
+            userService.ApproveUser(user);
+            moqRep.Verify(x => x.Update(user), Times.Once);
+            Assert.True(user.IsApproved);
         }
 
+        #endregion
+
+        #region DeleteTest
+        [Theory]
+        [ClassData(typeof(IndividualUserTestData))]
+        [ClassData(typeof(CorporateUserTestData))]
+        public void UserDeleteTest(User user)
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            user.ID = 1;
+
+            userService.DeleteUser(1);
+            moqRep.Verify(x => x.Delete(1), Times.Once);
+        }
         #endregion
     }
 }
