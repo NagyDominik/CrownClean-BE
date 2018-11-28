@@ -7,6 +7,7 @@ using CrownCleanApp.Core.ApplicationService.Services;
 using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
 using System.Collections;
+using System.Linq;
 
 namespace TestCore.ApplicationService.Implementation
 {
@@ -65,7 +66,7 @@ namespace TestCore.ApplicationService.Implementation
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        class CorporateUserTestData : IEnumerable<Object[]>
+        class CorporateUserTestData : IEnumerable<object[]>
         {
             readonly User u1 = new User()
             {
@@ -103,7 +104,7 @@ namespace TestCore.ApplicationService.Implementation
                 TaxNumber = "114881-8-9"
             };
 
-            public IEnumerator<object[]> GetEnumerator()
+            public IEnumerator<Object[]> GetEnumerator()
             {
                 yield return new object[] { u1 };
                 yield return new object[] { u2 };
@@ -162,6 +163,93 @@ namespace TestCore.ApplicationService.Implementation
             userService.DeleteUser(1);
             moqRep.Verify(x => x.Delete(1), Times.Once);
         }
+        #endregion
+
+        #region GetAllUsersTests
+
+        [Fact]
+        public void GetAllUsersTest()
+        {
+            IndividualUserTestData testData = new IndividualUserTestData();
+            var objects = testData.ToList();
+
+            List<User> users = new List<User>();
+
+            foreach (var item in objects)
+            {
+                users.Add((User)item[0]);
+            }
+
+            var moqRep = new Mock<IUserRepository>();
+            moqRep.Setup(x => x.ReadAll()).Returns(users);
+
+            IUserService userService = new UserService(moqRep.Object);
+
+            List<User> retrievedUsers = userService.GetAllUsers();
+            moqRep.Verify(x => x.ReadAll(), Times.Once);
+            Assert.Equal(users, retrievedUsers);
+        }
+
+        #endregion
+
+        #region GetUserByIDTests
+
+        [Fact]
+        public void GetUserByIdTest()
+        {
+            IndividualUserTestData testData = new IndividualUserTestData();
+            var objects = testData.ToList();
+
+            List<User> users = new List<User>();
+
+            int i = 0;
+            foreach (var item in objects)
+            {
+                User u = (User)item[0];
+                u.ID = i;
+                users.Add(u);
+                i++;
+            }
+
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            for (int id = 0; id < objects.Count; id++)
+            {
+                moqRep.Setup(x => x.ReadByID(id)).Returns(users.FirstOrDefault(u => u.ID == id));
+                User retrievedUser = userService.GetUserByID(id);
+                moqRep.Verify(x => x.ReadByID(id), Times.Once);
+                Assert.Equal(id, retrievedUser.ID);
+                moqRep.Reset();
+            }  
+        }
+
+        #endregion
+
+        #region UpdateUserTests
+
+        [Fact]
+        public void UpdateUserTest()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User user = new User()
+            {
+                ID = 1,
+                FirstName = "First",
+                LastName = "Last",
+                Email = "user@mail.dk",
+                PhoneNumber = "+4552521130",
+                Addresses = new List<string>() { "Address Str. 1" },
+                IsCompany = false,
+                IsAdmin = false
+            };
+
+            userService.UpdateUser(user);
+            moqRep.Verify(x => x.Update(user));
+        }
+
         #endregion
     }
 }
