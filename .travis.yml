@@ -11,4 +11,4 @@ branches:
 
 script:
  - dotnet build
- - dotnet test 
+ - dotnet test UnitTests/TestCore.csproj
