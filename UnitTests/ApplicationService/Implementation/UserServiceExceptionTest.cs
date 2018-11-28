@@ -361,7 +361,7 @@ namespace TestCore.ApplicationService.Implementation
 
         #endregion
 
-        #region OrderDeleteTests
+        #region OrderGetByIDTests
 
         [Fact]
         public void GetOrderByIDWithoutID()

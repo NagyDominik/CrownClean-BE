@@ -54,7 +54,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public Order GetOrderByID(int id)
         {
-            throw new NotImplementedException();
+            if (id == 0)
+                throw new InvalidDataException("Cannot get order by ID without ID!");
+            return _repo.ReadByID(id);
         }
 
         public Order UpdateOrder(Order order)
