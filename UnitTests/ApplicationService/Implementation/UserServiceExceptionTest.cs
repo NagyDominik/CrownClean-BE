@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using Moq;
 using CrownCleanApp.Core.DomainService;
@@ -240,5 +239,48 @@ namespace TestCore.ApplicationService.Implementation
 
         #endregion
 
-    }
+        #region DeleteUserTests
+
+        [Fact]
+        public void DeleteUserNegativeIDShouldThrowException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.DeleteUser(-1));
+            Assert.Equal("No User with negative ID exists!", e.Message);
+        }
+        #endregion
+
+        #region GetUserByIDTests
+
+        [Fact]
+        public void GetUserWithNegativeIDShouldThrowException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.GetUserByID(-1));
+            Assert.Equal("No User with negative ID exists!", e.Message);
+        }
+
+        #endregion
+
+        #region UpdateUserTests
+
+        [Fact]
+        public void UpdateUserNullShouldThrowException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User user = null;
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.UpdateUser(user));
+            Assert.Equal("Input is null!", e.Message);
+
+        }
+
+            #endregion
+        }
 }
