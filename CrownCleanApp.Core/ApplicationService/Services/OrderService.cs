@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
@@ -49,7 +51,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public List<Order> GetAllOrders()
         {
-            throw new NotImplementedException();
+            return _repo.ReadAll().ToList();
         }
 
         public Order GetOrderByID(int id)
@@ -61,7 +63,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public Order UpdateOrder(Order order)
         {
-            throw new NotImplementedException();
+           if(order == null || order.ID <= 0)
+                throw new InvalidDataException("Cannot update order without ID!");
+            return _repo.Update(order);
         }
     }
 }

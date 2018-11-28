@@ -375,6 +375,26 @@ namespace TestCore.ApplicationService.Implementation
 
         #endregion
 
+        #region OrderUpdateTests
+
+        [Fact]
+        public void OrderUpdateWithoutID()
+        {
+            var moqRep = new Mock<IOrderRepository>();
+            IOrderService orderService = new OrderService(moqRep.Object);
+
+            Order newOrder = new Order() { ID = 0 };
+            Order newOrder2 = null;
+
+            Exception e = Assert.Throws<InvalidDataException>(() => orderService.UpdateOrder(newOrder));
+            Exception e2 = Assert.Throws<InvalidDataException>(() => orderService.UpdateOrder(newOrder2));
+            Assert.Equal("Cannot update order without ID!", e.Message);
+            Assert.Equal("Cannot update order without ID!", e2.Message);
+        }
+    
+        #endregion
+
+
         #endregion
     }
 }
