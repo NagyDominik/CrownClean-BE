@@ -34,7 +34,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public Vehicle DeleteVehicle(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+                throw new InvalidDataException("Cannot delete vehicle without ID!");
+            return _repo.Delete(id);
         }
 
         public List<Vehicle> GetAllVehicles()
@@ -51,7 +53,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public Vehicle UpdateVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle == null || vehicle.ID <= 0)
+                throw new InvalidDataException("Cannot update vehicle without ID!");
+            return _repo.Update(vehicle);
         }
     }
 }

@@ -282,5 +282,6 @@ namespace TestCore.ApplicationService.Implementation
         }
 
             #endregion
-        }
+
+    }
 }

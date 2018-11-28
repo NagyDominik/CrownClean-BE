@@ -13,7 +13,7 @@ namespace TestCore.ApplicationService.Implementation
 {
 public class VehicleServiceExceptionTest
     {
-        #region AddVehicleTest
+        #region VehicleAddTests
 
         [Fact]
         public void AddVehiclerWithIDThrowsException()
@@ -104,7 +104,7 @@ public class VehicleServiceExceptionTest
 
         #endregion
 
-        #region VehicleGetByIDTests
+        #region VehicleGetByIDTest
 
         [Fact]
         public void GetVehicleByIDWithoutID()
@@ -116,6 +116,38 @@ public class VehicleServiceExceptionTest
             Assert.Equal("Cannot get vehicle by ID without ID!", e.Message);
         }
 
+        #endregion
+
+        #region VehicleDeleteTest
+
+        [Fact]
+        public void DeleteOrderWithoutID()
+        {
+            var moqRep = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(moqRep.Object);
+
+            Exception e = Assert.Throws<InvalidDataException>(() => vehicleService.DeleteVehicle(0));
+            Assert.Equal("Cannot delete vehicle without ID!", e.Message);
+        }
+
+        #endregion
+
+        #region VehicleUpdateTest
+
+        [Fact]
+        public void UpdateVehicleWithoutID()
+        {
+            var moqRep = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(moqRep.Object);
+
+            Vehicle newVehicle = new Vehicle() { ID = 0 };
+            Vehicle newVehicle2 = null;
+
+            Exception e = Assert.Throws<InvalidDataException>(() => vehicleService.UpdateVehicle(newVehicle));
+            Exception e2 = Assert.Throws<InvalidDataException>(() => vehicleService.UpdateVehicle(newVehicle2));
+            Assert.Equal("Cannot update vehicle without ID!", e.Message);
+            Assert.Equal("Cannot update vehicle without ID!", e2.Message);
+        }
         #endregion
 
     }
