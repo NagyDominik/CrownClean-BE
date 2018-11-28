@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace CrownCleanApp.Core.Entity
 {
     public class User
     {
-        public int ID { get; set; }
+        private int _id;
+
+        public int ID
+        {
+            get { return this._id; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new InvalidDataException("Cannot add a negative ID!");
+                }
+                else
+                {
+                    this._id = value;
+                }
+            }
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }

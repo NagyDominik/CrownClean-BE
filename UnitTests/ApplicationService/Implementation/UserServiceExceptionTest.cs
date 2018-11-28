@@ -12,11 +12,40 @@ using System.IO;
 namespace TestCore.ApplicationService.Implementation
 {
     /// <summary>
-    /// Thi class is intended to test the conditions, in which the UserService should thréow an exception.
+    /// Thi class is intended to test the conditions in which the UserService should throw an exception.
     /// </summary>
     public class UserExceptionTests
     {
+        [Fact]
+        public void CreateUserWithNegativeIdShouldThrowException()
+        {
+            User user = new User()
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Addresses = new List<string>() { "Address1" },
+                Email = "em@ail.dk",
+                PhoneNumber = "+4552521130",
+                IsAdmin = false,
+                IsCompany = false
+            };
+
+            Exception e = Assert.Throws<InvalidDataException>(() => user.ID = -1);
+            Assert.Equal("Cannot add a negative ID!", e.Message);
+        }
+
         #region UserAddTests
+        [Fact]
+        public void AddNullUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = null;
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
+            Assert.Equal("Input is null!", e.Message);
+        }
+
         [Fact]
         public void AddCustomerWithIDThrowsException()
         {
@@ -182,5 +211,42 @@ namespace TestCore.ApplicationService.Implementation
         }
 
         #endregion
-    }
+
+        #region ApproveUserTests
+
+        [Fact]
+        public void ApproveNullUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = null;
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Assert.Equal("Input is null!", e.Message);
+        }
+
+        [Fact]
+        public void ApproveAlreadyApprovedUserThrowsException()
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = new User()
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Email = "em@ail.dk",
+                PhoneNumber = "+4552521130",
+                Addresses = new List<string>() { "Address1" },
+                IsAdmin = false,
+                IsCompany = false,
+                IsApproved = true
+            };
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Assert.Equal("User is already approved!", e.Message);
+        }
+
+        #endregion
+ }
 }

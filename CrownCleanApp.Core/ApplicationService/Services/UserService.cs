@@ -18,6 +18,10 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public User AddUser(User user)
         {
+            if (user == null)
+            {
+                throw new InvalidDataException("Input is null!");
+            }
             if (user.ID != 0)
             {
                 throw new InvalidDataException("Cannot add user with existing ID!");
@@ -50,19 +54,35 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             {
                 throw new InvalidDataException("Cannot add a company without tax number! Did you mean to add an individual customer instead?");
             }
-
             return _repo.Create(user);
-
         }
 
         public User ApproveUser(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+                { throw new InvalidDataException("Input is null!");
+            }
+            if (user.ID < 0)
+            {
+                throw new InvalidDataException("No User with negative ID exists!");
+            }
+            if (user.IsApproved)
+            {
+                throw new InvalidDataException("User is already approved!");
+            }
+
+            user.IsApproved = true;
+            return _repo.Update(user);
         }
 
         public User DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            if (id < 0)
+            {
+                throw new InvalidDataException("No User with negative ID exists!");
+            }
+
+            return _repo.Delete(id);
         }
 
         public List<User> GetAllUsers()
