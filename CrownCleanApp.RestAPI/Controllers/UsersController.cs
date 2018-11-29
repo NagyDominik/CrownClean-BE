@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +13,133 @@ namespace CrownCleanApp.RestAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
+        {
+            this._userService = userService;
+        }
+
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<User>> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                return Ok(_userService.GetAllUsers());
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public ActionResult<User> Get(int id)
         {
-            return "value";
+            try
+            {
+                if (id < 0)
+                {
+                    return BadRequest("ID must be bigger than 0!");
+                }
+
+                User user = _userService.GetUserByID(id);
+
+                if (user == null)
+                {
+                    return BadRequest($"User with the ID of {id} was not found!");
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/Users
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<User> Post([FromBody] User user)
         {
+            try
+            {
+                if (user.ID != 0)
+                {
+                    return BadRequest("Cannot add a User with already existing ID!");
+                }
+
+                User tmp = _userService.AddUser(user);
+
+                if (tmp == null)
+                {
+                    return BadRequest("Could not add User!");
+                }
+                else
+                {
+                    return Ok(tmp);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<User> Put([FromBody] User user)
         {
+            try
+            {
+                User tmp = _userService.UpdateUser(user);
+
+                if (tmp == null)
+                {
+                    return BadRequest("Could not update User!");
+                }
+                else
+                {
+                    return Ok(tmp);
+                }
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<User> Delete(int id)
         {
+            try
+            {
+                if (id < 1)
+                {
+                    return BadRequest("Cannot delete non-existing user!");
+                }
+
+                User tmp = _userService.DeleteUser(id);
+
+                if (tmp == null)
+                {
+                    return BadRequest("Could not delete User!");
+                }
+                else
+                {
+                    return Ok(tmp);
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
