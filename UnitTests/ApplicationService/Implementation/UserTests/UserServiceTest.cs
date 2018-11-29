@@ -121,7 +121,7 @@ namespace TestCore.ApplicationService.Implementation
         [Theory]
         [ClassData(typeof(IndividualUserTestData))]
         [ClassData(typeof(CorporateUserTestData))]
-        public void AddlUser(User user)
+        public void AddUser(User user)
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
