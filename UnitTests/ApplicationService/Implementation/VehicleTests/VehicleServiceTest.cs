@@ -5,6 +5,10 @@ using Xunit;
 using Moq;
 using System.Collections;
 using CrownCleanApp.Core.Entity;
+using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.ApplicationService.Services;
+using System.Linq;
 
 namespace TestCore.ApplicationService.Implementation
 {
@@ -16,6 +20,7 @@ namespace TestCore.ApplicationService.Implementation
         {
             readonly static User vehicleUser1 = new User()
             {
+                ID = 1,
                 FirstName = "Tester",
                 LastName = "McTested Jr.",
                 Addresses = new List<string>() { "Test Str. 4", "New Address 2", "Empty str." },
@@ -28,6 +33,7 @@ namespace TestCore.ApplicationService.Implementation
 
             readonly static User vehicleUser2 = new User()
             {
+                ID = 2,
                 FirstName = "Test",
                 LastName = "Test",
                 Addresses = new List<string>() { "Test Str. 4" },
@@ -96,9 +102,123 @@ namespace TestCore.ApplicationService.Implementation
 
         [Theory]
         [ClassData(typeof(MockVehicles))]
-        public void AddVehicle(Vehicle vehicle)
+        public void AddVehicleTest(Vehicle vehicle)
         {
+            var mockRep = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(mockRep.Object);
 
+            vehicleService.AddVehicle(vehicle);
+            mockRep.Verify(x => x.Create(vehicle), Times.Once);
+        }
+
+        #endregion
+
+        #region GetAllVehiclesTests
+
+        [Fact]
+        public void GetAllVehicleTest()
+        {
+            MockVehicles testData = new MockVehicles();
+            var objects = testData.ToList();
+
+            List<Vehicle> vehicles = new List<Vehicle>();
+
+            foreach (var item in objects)
+            {
+                vehicles.Add((Vehicle)item[0]);
+            }
+
+            var mockRepo = new Mock<IVehicleRepository>();
+            mockRepo.Setup(x => x.ReadAll()).Returns(vehicles);
+
+            IVehicleService userService = new VehicleService(mockRepo.Object);
+            List<Vehicle> retrievedVehicles = userService.GetAllVehicles();
+
+            mockRepo.Verify(x => x.ReadAll(), Times.Once);
+            Assert.Equal(vehicles, retrievedVehicles);
+
+        }
+        #endregion
+
+        #region GetVehicleByIDTests
+
+        [Fact]
+        public void GetVehicleByIdTest()
+        {
+            MockVehicles testData = new MockVehicles();
+            var objects = testData.ToList();
+
+            List<Vehicle> vehicles = new List<Vehicle>();
+
+            int i = 1;
+            foreach (var item in objects)
+            {
+                Vehicle u = (Vehicle)item[0];
+                u.ID = i;
+                vehicles.Add(u);
+                i++;
+            }
+
+            var moqRep = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(moqRep.Object);
+
+            for (int id = 1; id < objects.Count; id++)
+            {
+                moqRep.Setup(x => x.ReadByID(id)).Returns(vehicles.FirstOrDefault(u => u.ID == id));
+                Vehicle retrievedVehicle = vehicleService.GetVehicleByID(id);
+                moqRep.Verify(x => x.ReadByID(id), Times.Once);
+                Assert.Equal(id, retrievedVehicle.ID);
+                moqRep.Reset();
+            }
+        }
+        #endregion
+
+        #region UpdateVehicleTests
+
+        [Fact]
+        public void UpdateUserTest()
+        {
+            var mockRepo = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(mockRepo.Object);
+
+            Vehicle vehicle = new Vehicle()
+            {
+                ID = 1,
+                Brand = "BMW",
+                Size = 2.0f,
+                InternalPlus = true,
+                UniqueID = "ABC-123",
+                Type = "Car",
+                User = new User() { ID = 1 }
+            };
+
+            vehicleService.UpdateVehicle(vehicle);
+            mockRepo.Verify(x => x.Update(vehicle), Times.Once);
+        }
+
+        #endregion
+
+        #region DeleteVehicleTests
+          
+        [Fact]
+        public void DeleteVehicleTest()
+        {
+            var mockRepo = new Mock<IVehicleRepository>();
+            IVehicleService vehicleService = new VehicleService(mockRepo.Object);
+
+            Vehicle vehicle = new Vehicle()
+            {
+                ID = 1,
+                Brand = "BMW",
+                Size = 2.0f,
+                InternalPlus = true,
+                UniqueID = "ABC-123",
+                Type = "Car",
+                User = new User() { ID = 1 }
+            };
+
+            vehicleService.DeleteVehicle(1);
+            mockRepo.Verify(x => x.Delete(1), Times.Once);
         }
 
         #endregion
