@@ -99,13 +99,17 @@ namespace TestCore.ApplicationService.Implementation
             Assert.Equal("Cannot approve order without ID!", e2.Message);
         }
 
-        //[Fact]
+        [Fact]
         public void ApproveOrderWithisApprovedTrue()
         {
             var moqRep = new Mock<IOrderRepository>();
             IOrderService orderService = new OrderService(moqRep.Object);
 
+
             Order newOrder = new Order() { ID = 1, IsApproved = true };
+
+            moqRep.Setup(x => x.ReadByID(newOrder.ID)).Returns(newOrder);
+
 
             Exception e = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(newOrder));
             Assert.Equal("Cannot approve order with approved status!", e.Message);
