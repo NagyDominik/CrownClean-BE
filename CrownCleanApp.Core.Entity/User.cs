@@ -31,14 +31,28 @@ namespace CrownCleanApp.Core.Entity
             sb.Append(string.Format("Phone number: \t" + this.PhoneNumber));
             sb.Append(string.Format("Email: \t" + this.Email));
             sb.Append(string.Format("Addresses: \n"));
-            foreach (string item in Addresses)
+            if (Addresses == null)
             {
-                sb.Append(string.Format("\t" + item));
+                sb.Append("Customer does not have any addresses yet.");
+            }
+            else
+            {
+                foreach (string item in Addresses)
+                {
+                    sb.Append(string.Format("\t" + item));
+                }
             }
             sb.Append(string.Format("Vehicles: \n"));
-            foreach (Vehicle item in Vehicles)
+            if (Vehicles == null)
             {
-                sb.Append(string.Format("\t" + item.ToString()));
+                sb.Append("Customer does not have any vehicles yet.");
+            }
+            else
+            {
+                foreach (Vehicle item in Vehicles)
+                {
+                    sb.Append(string.Format("\t" + item.ToString()));
+                }
             }
             if (IsCompany)
             {

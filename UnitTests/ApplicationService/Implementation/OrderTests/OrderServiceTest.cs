@@ -62,7 +62,7 @@ namespace TestCore.ApplicationService.Implementation
 
         #region ApproveOrderTest
 
-        //[Theory]
+        [Theory]
         [ClassData(typeof(OrderTestData))]
         public void OrderApproveTest(Order order)
         {
@@ -70,6 +70,8 @@ namespace TestCore.ApplicationService.Implementation
             IOrderService orderService = new OrderService(moqRep.Object);
 
             order.ID = 1;
+
+            moqRep.Setup(x => x.ReadByID(order.ID)).Returns(order);
 
             orderService.ApproveOrder(order);
             moqRep.Verify(x => x.Update(order), Times.Once);
