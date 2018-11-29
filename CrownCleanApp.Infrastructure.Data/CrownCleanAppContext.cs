@@ -1,5 +1,6 @@
 ﻿using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,13 @@ namespace CrownCleanApp.Infrastructure.Data
                 .HasMany(u => u.Orders)
                 .WithOne(o => o.User)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<User>()
+                .Property(p => p.Addresses)
+                .HasConversion(
+                    a => JsonConvert.SerializeObject(a),
+                    a => JsonConvert.DeserializeObject<List<string>>(a)
+                );
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Vehicles)
