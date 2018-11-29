@@ -25,11 +25,15 @@ namespace CrownCleanApp.Infrastructure.Data
                     a => JsonConvert.DeserializeObject<List<string>>(a)
                 );
 
-            //modelBuilder.Entity<User>()
-            //    .HasMany(u => u.Vehicles)
-            //    .WithOne(v => v.User)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Vehicles)
+                .WithOne(v => v.User)
+                .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Vehicle>()
+                .HasMany(v => v.Orders)
+                .WithOne(o => o.Vehicle)
+                .OnDelete(DeleteBehavior.SetNull);
         }
         
         public DbSet<User> Users { get; set; }
