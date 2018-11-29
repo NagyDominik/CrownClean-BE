@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
@@ -87,17 +88,28 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public List<User> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return _repo.ReadAll().ToList();
         }
 
         public User GetUserByID(int id)
         {
-            throw new NotImplementedException();
+            if (id < 0)
+            {
+                throw new InvalidDataException("No User with negative ID exists!");
+            }
+
+            return _repo.ReadByID(id);
+
         }
 
         public User UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new InvalidDataException("Input is null!");
+            }
+
+            return _repo.Update(user);
         }
 
         public User UpdateUserPassword(User user)

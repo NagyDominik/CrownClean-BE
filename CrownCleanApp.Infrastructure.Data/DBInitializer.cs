@@ -14,6 +14,7 @@ namespace CrownCleanApp.Infrastructure.Data
 
             var testUser = new User()
             {
+                ID = 1,
                 Email = "testEmail@fakeemail.dk",
                 FirstName = "Test",
                 LastName = "Testenson",
