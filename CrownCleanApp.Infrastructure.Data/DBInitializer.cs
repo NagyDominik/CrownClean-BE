@@ -98,6 +98,8 @@ namespace CrownCleanApp.Infrastructure.Data
 
             ctx.Orders.Add(testOrder);
             ctx.Orders.Add(testOrder2);
+
+            ctx.SaveChanges();
         }
     }
 }
