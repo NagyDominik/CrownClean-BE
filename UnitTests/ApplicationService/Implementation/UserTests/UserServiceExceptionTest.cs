@@ -18,23 +18,6 @@ namespace TestCore.ApplicationService.Implementation
         #region UserAddTests
 
         [Fact]
-        public void CreateUserWithNegativeIdShouldThrowException()
-        {
-            User user = new User() {
-                FirstName = "Test",
-                LastName = "Test",
-                Addresses = new List<string>() { "Address1" },
-                Email = "em@ail.dk",
-                PhoneNumber = "+4552521130",
-                IsAdmin = false,
-                IsCompany = false
-            };
-
-            Exception e = Assert.Throws<InvalidDataException>(() => user.ID = -1);
-            Assert.Equal("Cannot add a negative ID!", e.Message);
-        }
-
-        [Fact]
         public void AddNullUserThrowsException()
         {
             var moqRep = new Mock<IUserRepository>();
