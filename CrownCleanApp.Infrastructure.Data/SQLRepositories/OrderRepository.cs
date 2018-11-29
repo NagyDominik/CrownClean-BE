@@ -38,7 +38,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
 
         public Order ReadByID(int id)
         {
-            return _ctx.Orders.Include(o => o.User).FirstOrDefault(o => o.ID == id);
+            return _ctx.Orders.Include(o => o.User).Include(o => o.Vehicle).FirstOrDefault(o => o.ID == id);
         }
 
         public Order Update(Order order)

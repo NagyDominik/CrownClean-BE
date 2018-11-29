@@ -64,7 +64,8 @@ namespace CrownCleanApp.Core.ApplicationService.Services
         {
             if (id == 0)
                 throw new InvalidDataException("Cannot get order by ID without ID!");
-            return _repo.ReadByID(id);
+            Order order = _repo.ReadByID(id);
+            return order;
         }
 
         public Order UpdateOrder(Order order)

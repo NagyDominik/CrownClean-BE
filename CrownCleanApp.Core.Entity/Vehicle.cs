@@ -13,5 +13,6 @@ namespace CrownCleanApp.Core.Entity
         public float Size { get; set; }
         public bool InternalPlus { get; set; }
         public User User { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }
