@@ -38,7 +38,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
 
         public Vehicle ReadByID(int id)
         {
-            return _ctx.Vehicles.Include(v => v.User).FirstOrDefault(v => v.ID == id);
+            return _ctx.Vehicles.Include(v => v.Orders).Include(v => v.User).AsNoTracking().FirstOrDefault(v => v.ID == id);
         }
 
         public Vehicle Update(Vehicle vehicle)

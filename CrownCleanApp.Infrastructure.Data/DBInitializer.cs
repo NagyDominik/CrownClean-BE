@@ -82,7 +82,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 OrderDate = DateTime.Now.AddMonths(-1).AddDays(5),
                 Services = "testServiceRequired",
                 User = new User() { ID = 1 },
-                Vehicle = new Vehicle() { ID = 11 },
+                Vehicle = new Vehicle() { ID = 12 },
                 IsApproved = true
                
             };
