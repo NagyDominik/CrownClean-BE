@@ -73,14 +73,15 @@ namespace CrownCleanApp.RestAPI.Controllers
                 }
 
                 User tmp = _userService.AddUser(user);
-
+             
                 if (tmp == null)
                 {
                     return BadRequest("Could not add User!");
                 }
                 else
                 {
-                    return Ok(tmp);
+                    string s = String.Format($"A new user with the ID of {tmp.ID} hass been added.");
+                    return Ok(s);
                 }
 
             }
@@ -104,7 +105,8 @@ namespace CrownCleanApp.RestAPI.Controllers
                 }
                 else
                 {
-                    return Ok(tmp);
+                    String s = String.Format($"The user with ID of {tmp.ID} was updated!");
+                    return Ok(s);
                 }
 
             }
@@ -133,7 +135,8 @@ namespace CrownCleanApp.RestAPI.Controllers
                 }
                 else
                 {
-                    return Ok(tmp);
+                    String s = String.Format($"The user with ID of {tmp.ID} was deleted!");
+                    return Ok(s);
                 }
             }
             catch(Exception ex)
