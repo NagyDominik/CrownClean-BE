@@ -39,7 +39,6 @@ namespace CrownCleanApp.RestAPI.Controllers
             if (id <= 0) {
                 BadRequest("ID must be greater than 0!");
             }
-
             try {
                 return Ok(_service.GetOrderByID(id));
             }
@@ -65,20 +64,20 @@ namespace CrownCleanApp.RestAPI.Controllers
             }
         }
 
-        //// PUT: api/Orders/5
-        //[HttpPut("{id}")]
-        //public ActionResult<Order> Put(int id, [FromBody] Order order)
-        //{
-        //    if (order.ID == 0)
-        //        BadRequest("Order ID must be provided!");
+        // PUT: api/Orders/5
+        [HttpPut("{id}")]
+        public ActionResult<Order> Put(int id, [FromBody] Order order)
+        {
+            if (order.ID == 0)
+                BadRequest("Order ID must be provided!");
 
-        //    try {
-        //        return Ok(_service.UpdateOrder(order));
-        //    }
-        //    catch (Exception e) {
-        //        return BadRequest(e.Message);
-        //    }
-        //}
+            try {
+                return Ok(_service.UpdateOrder(order));
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
@@ -95,23 +94,15 @@ namespace CrownCleanApp.RestAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<Order> Approve(Order order)
+        [HttpPut("approve/{id}")]
+        public ActionResult<Order> Approve(int id)
         {
-            if (order == null)
+            if (id == 0)
                 BadRequest("Order ID must be provided!");
-
-            try
-            {
-                Order approvedOrder = _service.GetOrderByID(order.ID);
-                if (approvedOrder.IsApproved == true)
-                {
-                    return Ok(_service.UpdateOrder(approvedOrder));
-                }
-                return approvedOrder;
+            try {
+                return Ok(_service.ApproveOrder(id));
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }

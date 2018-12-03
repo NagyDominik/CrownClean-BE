@@ -73,7 +73,7 @@ namespace TestCore.ApplicationService.Implementation
 
             moqRep.Setup(x => x.ReadByID(order.ID)).Returns(order);
 
-            orderService.ApproveOrder(order);
+            orderService.ApproveOrder(order.ID);
             moqRep.Verify(x => x.Update(order), Times.Once);
         }
 

@@ -31,20 +31,20 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Create(order);
         }
 
-        public Order ApproveOrder(Order order)
+        public Order ApproveOrder(int id)
         {
-            if (order == null || order.ID == 0)
+            if (id == 0)
                 throw new InvalidDataException("Cannot approve order without ID!");
 
-            Order orderUpdate = _repo.ReadByID(order.ID);
+            Order orderUpdate = _repo.ReadByID(id);
             if (orderUpdate != null) {
-                if (order.IsApproved)
+                if (orderUpdate.IsApproved)
                     throw new InvalidDataException("Cannot approve order with approved status!");
                 else
                     orderUpdate.IsApproved = true;
             }
             else
-                throw new InvalidDataException("There is no order with the ID of " + order.ID + " in the database!");
+                throw new InvalidDataException("There is no order with the ID of " + id + " in the database!");
             return _repo.Update(orderUpdate);
         }
 
