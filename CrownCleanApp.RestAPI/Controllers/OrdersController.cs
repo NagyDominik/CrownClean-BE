@@ -65,20 +65,20 @@ namespace CrownCleanApp.RestAPI.Controllers
             }
         }
 
-        // PUT: api/Orders/5
-        [HttpPut("{id}")]
-        public ActionResult<Order> Put(int id, [FromBody] Order order)
-        {
-            if (order.ID == 0)
-                BadRequest("Order ID must be provided!");
+        //// PUT: api/Orders/5
+        //[HttpPut("{id}")]
+        //public ActionResult<Order> Put(int id, [FromBody] Order order)
+        //{
+        //    if (order.ID == 0)
+        //        BadRequest("Order ID must be provided!");
 
-            try {
-                return Ok(_service.UpdateOrder(order));
-            }
-            catch (Exception e) {
-                return BadRequest(e.Message);
-            }
-        }
+        //    try {
+        //        return Ok(_service.UpdateOrder(order));
+        //    }
+        //    catch (Exception e) {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
@@ -91,6 +91,27 @@ namespace CrownCleanApp.RestAPI.Controllers
                 return Ok(_service.DeleteOrder(id));
             }
             catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<Order> Approve(Order order)
+        {
+            if (order == null)
+                BadRequest("Order ID must be provided!");
+
+            try
+            {
+                Order approvedOrder = _service.GetOrderByID(order.ID);
+                if (approvedOrder.IsApproved == true)
+                {
+                    return Ok(_service.UpdateOrder(approvedOrder));
+                }
+                return approvedOrder;
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }
