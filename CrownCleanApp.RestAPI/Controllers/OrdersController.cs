@@ -39,7 +39,6 @@ namespace CrownCleanApp.RestAPI.Controllers
             if (id <= 0) {
                 BadRequest("ID must be greater than 0!");
             }
-
             try {
                 return Ok(_service.GetOrderByID(id));
             }
@@ -89,6 +88,19 @@ namespace CrownCleanApp.RestAPI.Controllers
 
             try {
                 return Ok(_service.DeleteOrder(id));
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("approve/{id}")]
+        public ActionResult<Order> Approve(int id)
+        {
+            if (id == 0)
+                BadRequest("Order ID must be provided!");
+            try {
+                return Ok(_service.ApproveOrder(id));
             }
             catch (Exception e) {
                 return BadRequest(e.Message);

@@ -39,7 +39,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        Order ApproveOrder(Order order);
+        Order ApproveOrder(int id);
 
         /// <summary>
         /// 

@@ -85,18 +85,15 @@ namespace TestCore.ApplicationService.Implementation
         #region OrderApproveTests
 
         [Fact]
-        public void ApproveOrderWithNullOrder()
+        public void ApproveOrderWithoutID()
         {
             var moqRep = new Mock<IOrderRepository>();
             IOrderService orderService = new OrderService(moqRep.Object);
 
-            Order newOrder = new Order() { ID = 0 };
-            Order newOrder2 = null;
+            int ID = 0 ;
 
-            Exception e = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(newOrder));
-            Exception e2 = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(newOrder2));
+            Exception e = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(ID));
             Assert.Equal("Cannot approve order without ID!", e.Message);
-            Assert.Equal("Cannot approve order without ID!", e2.Message);
         }
 
         [Fact]
@@ -111,7 +108,7 @@ namespace TestCore.ApplicationService.Implementation
             moqRep.Setup(x => x.ReadByID(newOrder.ID)).Returns(newOrder);
 
 
-            Exception e = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(newOrder));
+            Exception e = Assert.Throws<InvalidDataException>(() => orderService.ApproveOrder(newOrder.ID));
             Assert.Equal("Cannot approve order with approved status!", e.Message);
         }
 
