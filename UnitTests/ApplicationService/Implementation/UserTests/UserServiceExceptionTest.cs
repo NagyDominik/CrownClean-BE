@@ -184,6 +184,33 @@ namespace TestCore.ApplicationService.Implementation
             Assert.Equal("Cannot add a company without tax number! Did you mean to add an individual customer instead?", e.Message);
         }
 
+        [Theory]
+        [InlineData("j.@server1.proseware.com")]
+        [InlineData("j..s@proseware.com")]
+        [InlineData("js*@proseware.com")]
+        [InlineData("js@proseware..com")]
+        [InlineData("testemai.dk")]
+        [InlineData("tesmail@dk")]
+        public void AddUserWithInvalidEmailAddressThrowsException(string email)
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User newUser = new User()
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Email = email,
+                PhoneNumber = "+4552521130",
+                Addresses = new List<string>() { "Address1" },
+                IsAdmin = false,
+                IsCompany = false
+            };
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.AddUser(newUser));
+            Assert.Equal("Invalid e-mail address!", e.Message);
+        }
+
         #endregion
 
         #region UserApproveTests
