@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Core.Entity;
 
@@ -55,6 +56,19 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             {
                 throw new InvalidDataException("Cannot add a company without tax number! Did you mean to add an individual customer instead?");
             }
+
+            // Create an e-mail verifying regex that ignores case and has a 1 second timeout.
+            // Note: this does not verify that the e-mail address is actually working, only that it is in a valid format.
+            // From: https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+            Regex emailVerificationRegex = new Regex(
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+
+            if (!emailVerificationRegex.IsMatch(user.Email))
+            {
+                throw new InvalidDataException("Invalid e-mail address!");
+            }
+
             return _repo.Create(user);
         }
 

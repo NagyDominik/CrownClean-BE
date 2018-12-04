@@ -50,7 +50,8 @@ namespace CrownCleanApp.Infrastructure.Data
                 Brand = "BMW",
                 UniqueID = "ASD123",
                 Type = "SUV",
-                User = new User() { ID = 1},
+                User = new User() { ID = 1 },
+                Size = 2.0f,
                 InternalPlus = true
             };
 
@@ -60,6 +61,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 Brand = "Kia",
                 UniqueID = "ASD456",
                 Type = "Saloon",
+                Size = 1.5f,
                 User = new User() { ID = 2 },
                 InternalPlus = false
             };
@@ -69,6 +71,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 Brand = "Trabant",
                 UniqueID = "EFG123",
                 Type = "Saloon",
+                Size = 1.0f,
                 User = new User() { ID = 2 },
                 InternalPlus = false
             };

@@ -130,6 +130,33 @@ namespace TestCore.ApplicationService.Implementation
             moqRep.Verify(x => x.Create(user), Times.Once);
         }
 
+        [Theory]
+        [InlineData("sebok.pete101@gmail.com")]
+        [InlineData("testuser@owndomain.dk")]
+        [InlineData("david.jones@proseware.com")]
+        [InlineData("david.jones@proseware.other.com")]
+        [InlineData("useremail.emaiaddress.103@domain.sub.dk")]
+        public void CreateUserWithValidEmailAddress(string email)
+        {
+            var moqRep = new Mock<IUserRepository>();
+            IUserService userService = new UserService(moqRep.Object);
+
+            User user = new User()
+            {
+                FirstName = "Test",
+                LastName = "User",
+                Email = email,
+                PhoneNumber = "+4552521120",
+                Addresses = new List<string>() { "Address_1", "Address_2"},
+                IsAdmin = false,
+                IsApproved = false,
+                IsCompany = false
+            };
+
+            userService.AddUser(user);
+            moqRep.Verify(x => x.Create(user), Times.Once);
+        }
+
         #endregion
 
         #region ApproveUserTest
