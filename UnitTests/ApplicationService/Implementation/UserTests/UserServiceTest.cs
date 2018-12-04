@@ -142,7 +142,7 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            userService.ApproveUser(user);
+            userService.ApproveUser();
             moqRep.Verify(x => x.Update(user), Times.Once);
             Assert.True(user.IsApproved);
         }

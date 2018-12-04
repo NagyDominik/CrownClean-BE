@@ -35,7 +35,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 FirstName = "Testicy",
                 LastName = "Testensonion",
                 IsAdmin = true,
-                IsApproved = true,
+                IsApproved = false,
                 PhoneNumber = "+4523123",
                 IsCompany = false,
                 Addresses = new List<string>()
@@ -83,7 +83,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 Services = "testServiceRequired",
                 User = new User() { ID = 1 },
                 Vehicle = new Vehicle() { ID = 12 },
-                IsApproved = true
+                IsApproved = false
                
             };
 
@@ -97,7 +97,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 Services = "2222testServiceRequired",
                 User = new User() { ID = 2 },
                 Vehicle = new Vehicle() { ID = 12 },
-                IsApproved = true
+                IsApproved = false
             };
 
             ctx.Users.Add(testUser);

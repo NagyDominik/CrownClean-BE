@@ -42,11 +42,11 @@ namespace CrownCleanApp.Core.ApplicationService
         User UpdateUserPassword(User user);
 
         /// <summary>
-        /// Approve a user.
+        /// 
         /// </summary>
-        /// <param name="user">The user that will be approved.</param>
-        /// <returns>The user.</returns>
-        User ApproveUser(User user);
+        /// 
+        /// <returns></returns>
+        User ApproveUser(int id);
 
         /// <summary>
         /// Delete a user from the database based on ID.

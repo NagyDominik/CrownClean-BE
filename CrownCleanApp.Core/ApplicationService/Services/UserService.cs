@@ -58,22 +58,36 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Create(user);
         }
 
-        public User ApproveUser(User user)
+        public User ApproveUser(int id)
         {
-            if (user == null)
-                { throw new InvalidDataException("Input is null!");
+            if (id == 0)
+            {
+                throw new InvalidDataException("Cannot approve user without ID!");
             }
-            if (user.ID < 0)
+            if (id < 0)
             {
                 throw new InvalidDataException("No User with negative ID exists!");
             }
-            if (user.IsApproved)
-            {
-                throw new InvalidDataException("User is already approved!");
-            }
 
-            user.IsApproved = true;
-            return _repo.Update(user);
+            User approveUser = _repo.ReadByID(id);
+
+            if (approveUser != null)
+            {
+                if (approveUser.IsApproved)
+                {
+                    throw new InvalidDataException("Cannot approve user with approved status!");
+                }
+
+                else
+                {
+                    approveUser.IsApproved = true;
+                }
+            }
+            else
+            {
+                throw new InvalidDataException("There is no user with the ID of " + id + " in the database!");
+            }
+            return _repo.Update(approveUser);
         }
 
         public User DeleteUser(int id)

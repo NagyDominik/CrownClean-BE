@@ -143,6 +143,22 @@ namespace CrownCleanApp.RestAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
+        }
+
+        [HttpPut("approve/{id}")]
+        public ActionResult<Order> Approve(int id)
+        {
+            if (id == 0)
+                BadRequest("Order ID must be provided!");
+            try
+            {
+                return Ok(_userService.ApproveUser(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

@@ -195,7 +195,7 @@ namespace TestCore.ApplicationService.Implementation
             IUserService userService = new UserService(moqRep.Object);
 
             User newUser = null;
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser());
             Assert.Equal("Input is null!", e.Message);
         }
 
@@ -216,7 +216,7 @@ namespace TestCore.ApplicationService.Implementation
                 IsApproved = true
             };
 
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser));
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser());
             Assert.Equal("User is already approved!", e.Message);
         }
 
