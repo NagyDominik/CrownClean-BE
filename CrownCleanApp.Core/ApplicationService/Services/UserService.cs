@@ -75,7 +75,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             {
                 if (approveUser.IsApproved)
                 {
-                    throw new InvalidDataException("Cannot approve user with approved status!");
+                    throw new InvalidDataException("User is already approved!");
                 }
 
                 else

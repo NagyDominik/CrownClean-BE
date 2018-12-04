@@ -189,14 +189,15 @@ namespace TestCore.ApplicationService.Implementation
         #region UserApproveTests
 
         [Fact]
-        public void ApproveNullUserThrowsException()
+        public void ApproveWithoutUserIDThrowsException()
         {
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = null;
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser());
-            Assert.Equal("Input is null!", e.Message);
+            int ID = 0;
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(ID));
+            Assert.Equal("Cannot approve user without ID!", e.Message);
         }
 
         [Fact]
@@ -205,18 +206,11 @@ namespace TestCore.ApplicationService.Implementation
             var moqRep = new Mock<IUserRepository>();
             IUserService userService = new UserService(moqRep.Object);
 
-            User newUser = new User() {
-                FirstName = "Test",
-                LastName = "Test",
-                Email = "em@ail.dk",
-                PhoneNumber = "+4552521130",
-                Addresses = new List<string>() { "Address1" },
-                IsAdmin = false,
-                IsCompany = false,
-                IsApproved = true
-            };
+            User newUser = new User() { ID = 1, IsApproved = true };
 
-            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser());
+            moqRep.Setup(x => x.ReadByID(newUser.ID)).Returns(newUser);
+
+            Exception e = Assert.Throws<InvalidDataException>(() => userService.ApproveUser(newUser.ID));
             Assert.Equal("User is already approved!", e.Message);
         }
 
