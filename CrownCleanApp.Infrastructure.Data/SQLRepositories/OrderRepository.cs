@@ -45,6 +45,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
         {
             _ctx.Attach(order).State = EntityState.Modified;
             _ctx.Entry(order).Reference(o => o.User).IsModified = true;
+            _ctx.Entry(order).Reference(o => o.Vehicle).IsModified = true;
             _ctx.SaveChanges();
             return order;
         }

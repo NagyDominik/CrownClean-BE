@@ -60,6 +60,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                 return Ok(_service.AddOrder(order));
             }
             catch (Exception e) {
+                Console.WriteLine(e);
                 return BadRequest(e.Message);
             }
         }

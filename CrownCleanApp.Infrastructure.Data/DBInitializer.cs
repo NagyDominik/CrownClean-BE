@@ -83,7 +83,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 Services = "testServiceRequired",
                 User = new User() { ID = 1 },
                 Vehicle = new Vehicle() { ID = 12 },
-                IsApproved = true
+                IsApproved = false
                
             };
 

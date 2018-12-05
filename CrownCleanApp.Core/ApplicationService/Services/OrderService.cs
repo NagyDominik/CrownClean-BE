@@ -28,6 +28,8 @@ namespace CrownCleanApp.Core.ApplicationService.Services
                 throw new InvalidDataException("Cannot add order without vehicle!");
             if (order.Services == null || order.Services.Trim() == "")
                 throw new InvalidDataException("Cannot add order without service!");
+            order.UserID = order.User.ID;
+            order.VehicleID = order.Vehicle.ID;
             return _repo.Create(order);
         }
 

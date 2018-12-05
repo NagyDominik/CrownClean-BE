@@ -25,6 +25,16 @@ namespace CrownCleanApp.Infrastructure.Data
                     a => JsonConvert.DeserializeObject<List<string>>(a)
                 );
 
+            modelBuilder.Entity<Order>()
+               .HasOne(o => o.User)
+               .WithMany(u => u.Orders)
+               .HasForeignKey(o => o.UserID);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Vehicle)
+                .WithMany(v => v.Orders)
+                .HasForeignKey(o => o.VehicleID);
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Vehicles)
                 .WithOne(v => v.User)
