@@ -7,8 +7,13 @@ namespace CrownCleanApp.Core.Entity
     public class Order
     {
         public int ID { get; set; }
+
+        public int UserID { get; set; }
         public User User { get; set; }
+
+        public int VehicleID { get; set; }
         public Vehicle Vehicle { get; set; }
+
         public DateTime OrderDate { get; set; }
         public DateTime ApproveDate { get; set; }
         public string Services { get; set; }
