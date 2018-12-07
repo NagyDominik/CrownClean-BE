@@ -62,5 +62,24 @@ namespace CrownCleanApp.RestAPI.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult<string> Login([FromBody] LoginDTO dto)
+        {
+            User user = _userService.GetAllUsers().FirstOrDefault(u => u.Email == dto.Email);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_authenticationHelper.VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
+            {
+                return Unauthorized();
+            }
+
+            // For now only return the token.
+            return Ok(new {token = _tokenManager.GenerateJwtToken(user)});
+        }
+
     }
 }
