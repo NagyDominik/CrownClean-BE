@@ -12,8 +12,7 @@ namespace CrownCleanApp.Infrastructure.Data
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
 
-            var testUser = new User()
-            {
+            var testUser = new User() {
                 ID = 1,
                 Email = "testEmail@fakeemail.dk",
                 FirstName = "Test",
@@ -44,8 +43,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 },
             };
 
-            var testVehicle = new Vehicle()
-            {
+            var testVehicle = new Vehicle() {
                 ID = 11,
                 Brand = "BMW",
                 UniqueID = "ASD123",
@@ -55,8 +53,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 InternalPlus = true
             };
 
-            var testVehicle2 = new Vehicle()
-            {
+            var testVehicle2 = new Vehicle() {
                 ID = 12,
                 Brand = "Kia",
                 UniqueID = "ASD456",
@@ -76,8 +73,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 InternalPlus = false
             };
 
-            var testOrder = new Order()
-            {
+            var testOrder = new Order() {
                 ID = 1,
                 ApproveDate = DateTime.Now.AddMonths(-1),
                 AtAddress = true,
@@ -87,11 +83,10 @@ namespace CrownCleanApp.Infrastructure.Data
                 User = new User() { ID = 1 },
                 Vehicle = new Vehicle() { ID = 12 },
                 IsApproved = false
-               
+
             };
 
-            var testOrder2 = new Order()
-            {
+            var testOrder2 = new Order() {
                 ID = 2,
                 ApproveDate = DateTime.Now.AddMonths(-2),
                 AtAddress = true,
@@ -112,6 +107,40 @@ namespace CrownCleanApp.Infrastructure.Data
 
             ctx.Orders.Add(testOrder);
             ctx.Orders.Add(testOrder2);
+
+            for (int i = 10; i < 40; i++) {
+                var x = new User() {
+                    ID = i,
+                    Email = "testEmail@fakeemail.dk",
+                    FirstName = "Test",
+                    LastName = "Testenson",
+                    IsAdmin = false,
+                    IsApproved = true,
+                    PhoneNumber = "+45558587489",
+                    IsCompany = false,
+                    Addresses = new List<string>(){
+                   "asdasd",
+                   "weqwdqwe"
+                    },
+                };
+                ctx.Users.Add(x);
+            };
+
+            for (int i = 10; i < 40; i++) {
+                var y = new Order() {
+                    ID = i,
+                    ApproveDate = DateTime.Now.AddMonths(-1),
+                    AtAddress = true,
+                    Description = "TestDescription",
+                    OrderDate = DateTime.Now.AddMonths(-1).AddDays(5),
+                    Services = "testServiceRequired",
+                    User = new User() { ID = 1 },
+                    Vehicle = new Vehicle() { ID = 12 },
+                    IsApproved = false
+                };
+                ctx.Orders.Add(y);
+
+            };
 
             ctx.SaveChanges();
         }
