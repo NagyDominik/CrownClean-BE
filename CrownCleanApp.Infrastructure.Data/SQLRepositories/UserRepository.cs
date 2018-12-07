@@ -48,5 +48,6 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             _ctx.SaveChanges();
             return user;
         }
+
     }
 }

@@ -335,3 +335,5 @@ ASALocalRun/
 
 # Local database file
 *.db
+*.sln
+*.csproj
