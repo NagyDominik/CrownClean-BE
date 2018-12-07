@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +25,18 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public ActionResult<List<User>> Get()
+        public ActionResult<FilteredList<User>> Get([FromQuery] Filter filter)
         {
             try
             {
-                return Ok(_userService.GetAllUsers());
+                if (filter.CurrentPage == 0 && filter.ItemsPerPage == 0)
+                {
+                    return Ok(_userService.GetAllUsers(null));
+                }
+                else
+                {
+                    return Ok(_userService.GetAllUsers(filter));
+                }
             }
             catch(Exception ex)
             {

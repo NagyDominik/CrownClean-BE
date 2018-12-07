@@ -25,7 +25,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         public ActionResult<IEnumerable<Order>> Get()
         {
             try {
-                return Ok(_service.GetAllOrders());
+                return Ok(_service.GetAllOrders(null));
             }
             catch (Exception e) {
                 return BadRequest(e.Message);

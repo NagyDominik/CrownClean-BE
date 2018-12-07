@@ -67,7 +67,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                User user = _userService.GetAllUsers().FirstOrDefault(u => u.Email == dto.Email);
+                User user = _userService.GetAllUsers(null).List.FirstOrDefault(u => u.Email == dto.Email);
 
                 if (user == null)
                 {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
@@ -57,9 +58,10 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public List<Order> GetAllOrders()
+        public FilteredList<Order> GetAllOrders(Filter filter = null)
         {
-            return _repo.ReadAll().ToList();
+            //return _repo.ReadAll().ToList();
+            throw new NotImplementedException();
         }
 
         public Order GetOrderByID(int id)

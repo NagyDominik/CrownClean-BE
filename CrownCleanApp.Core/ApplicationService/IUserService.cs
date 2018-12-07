@@ -1,4 +1,5 @@
-﻿using CrownCleanApp.Core.Entity;
+﻿using CrownCleanApp.Core.DomainService.Filtering;
+using CrownCleanApp.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// Return all the user objects located in the database.
         /// </summary>
         /// <returns>All the user objects located in the database.</returns>
-        List<User> GetAllUsers();
+        FilteredList<User> GetAllUsers(Filter filter);
 
         /// <summary>
         /// Fetch a user based on the ID.

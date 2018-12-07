@@ -1,4 +1,5 @@
-﻿using CrownCleanApp.Core.Entity;
+﻿using CrownCleanApp.Core.DomainService.Filtering;
+using CrownCleanApp.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace CrownCleanApp.Core.DomainService
         /// Retrieve the list of users stored in the database.
         /// </summary>
         /// <returns>The list of users stored in the database.</returns>
-        IEnumerable<User> ReadAll();
+        FilteredList<User> ReadAll(Filter filter);
 
         /// <summary>
         /// Return an individual user based on the ID.

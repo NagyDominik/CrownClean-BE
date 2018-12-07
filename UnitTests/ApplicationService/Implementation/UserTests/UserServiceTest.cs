@@ -210,12 +210,12 @@ namespace TestCore.ApplicationService.Implementation
             }
 
             var moqRep = new Mock<IUserRepository>();
-            moqRep.Setup(x => x.ReadAll()).Returns(users);
+            moqRep.Setup(x => x.ReadAll(null)).Returns(new CrownCleanApp.Core.DomainService.Filtering.FilteredList<User>() { List = users });
 
             IUserService userService = new UserService(moqRep.Object);
 
-            List<User> retrievedUsers = userService.GetAllUsers();
-            moqRep.Verify(x => x.ReadAll(), Times.Once);
+            List<User> retrievedUsers = userService.GetAllUsers(null).List.ToList();
+            moqRep.Verify(x => x.ReadAll(null), Times.Once);
             Assert.Equal(users, retrievedUsers);
         }
 

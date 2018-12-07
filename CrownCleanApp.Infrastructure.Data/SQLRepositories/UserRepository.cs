@@ -1,4 +1,5 @@
 ﻿using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,9 +32,25 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return deletedUser;
         }
 
-        public IEnumerable<User> ReadAll()
+        public FilteredList<User> ReadAll(Filter filter)
         {
-            return _ctx.Users;
+            var filteredList = new FilteredList<User>();
+
+            // If there is a filter, use it to return the correct number of users
+            if (filter != null && filter.ItemsPerPage > 0 && filter.CurrentPage > 0)
+            {
+                filteredList.List = _ctx.Users
+                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                    .Take(filter.ItemsPerPage);
+                filteredList.Count = _ctx.Users.Count();
+            }
+            else
+            {
+                filteredList.List = _ctx.Users;
+                filteredList.Count = filteredList.List.Count();
+            }
+
+            return filteredList;
         }
 
         public User ReadByID(int id)
