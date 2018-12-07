@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CrownCleanApp.RestAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -65,20 +65,27 @@ namespace CrownCleanApp.RestAPI.Controllers
         [HttpPost]
         public ActionResult<string> Login([FromBody] LoginDTO dto)
         {
-            User user = _userService.GetAllUsers().FirstOrDefault(u => u.Email == dto.Email);
-
-            if (user == null)
+            try
             {
-                return Unauthorized();
-            }
+                User user = _userService.GetAllUsers().FirstOrDefault(u => u.Email == dto.Email);
 
-            if (!_authenticationHelper.VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+
+                if (!_authenticationHelper.VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
+                {
+                    return Unauthorized();
+                }
+
+                // For now only return the token.
+                return Ok(new { token = _tokenManager.GenerateJwtToken(user) });
+            }
+            catch(Exception e)
             {
-                return Unauthorized();
+                return BadRequest(e.Message);
             }
-
-            // For now only return the token.
-            return Ok(new {token = _tokenManager.GenerateJwtToken(user)});
         }
 
     }
