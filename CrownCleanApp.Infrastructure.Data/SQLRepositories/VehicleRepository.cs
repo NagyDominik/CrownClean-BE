@@ -1,4 +1,5 @@
 ﻿using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,9 +32,25 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return removedVehicle;
         }
 
-        public IEnumerable<Vehicle> ReadAll()
+        public FilteredList<Vehicle> ReadAll(Filter filter)
         {
-            return _ctx.Vehicles;
+            FilteredList<Vehicle> filteredList = new FilteredList<Vehicle>();
+
+            // If there is a filter, use it to return the correct number of users
+            if (filter != null && filter.ItemsPerPage > 0 && filter.CurrentPage > 0)
+            {
+                filteredList.List = _ctx.Vehicles
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                .Take(filter.ItemsPerPage);
+                filteredList.Count = _ctx.Vehicles.Count();
+            }
+            else
+            {
+                filteredList.List = _ctx.Vehicles;
+                filteredList.Count = filteredList.List.Count();
+            }
+
+            return filteredList;
         }
 
         public Vehicle ReadByID(int id)

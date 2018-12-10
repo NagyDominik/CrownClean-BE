@@ -1,4 +1,5 @@
-﻿using CrownCleanApp.Core.Entity;
+﻿using CrownCleanApp.Core.DomainService.Filtering;
+using CrownCleanApp.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// </summary>
         /// <param name="filter">A filter object used for pagination and filtering</param>
         /// <returns></returns>
-        List<Vehicle> GetAllVehicles();
+        FilteredList<Vehicle> GetAllVehicles(Filter filter);
 
         /// <summary>
         /// Retrieve an vehicle based on ID.

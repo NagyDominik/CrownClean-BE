@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
@@ -39,9 +40,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public List<Vehicle> GetAllVehicles()
+        public FilteredList<Vehicle> GetAllVehicles(Filter filter = null)
         {
-            return _repo.ReadAll().ToList();
+            return _repo.ReadAll(filter);
         }
 
         public Vehicle GetVehicleByID(int id)

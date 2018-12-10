@@ -34,14 +34,14 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
 
         public FilteredList<User> ReadAll(Filter filter)
         {
-            var filteredList = new FilteredList<User>();
+            FilteredList<User> filteredList = new FilteredList<User>();
 
             // If there is a filter, use it to return the correct number of users
             if (filter != null && filter.ItemsPerPage > 0 && filter.CurrentPage > 0)
             {
                 filteredList.List = _ctx.Users
-                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
-                    .Take(filter.ItemsPerPage);
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                .Take(filter.ItemsPerPage);
                 filteredList.Count = _ctx.Users.Count();
             }
             else

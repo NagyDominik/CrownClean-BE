@@ -60,8 +60,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
 
         public FilteredList<Order> GetAllOrders(Filter filter = null)
         {
-            //return _repo.ReadAll().ToList();
-            throw new NotImplementedException();
+            return _repo.ReadAll(filter);
         }
 
         public Order GetOrderByID(int id)
