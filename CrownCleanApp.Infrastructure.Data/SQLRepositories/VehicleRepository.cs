@@ -32,7 +32,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return removedVehicle;
         }
 
-        public FilteredList<Vehicle> ReadAll(Filter filter)
+        public FilteredList<Vehicle> ReadAll(VehicleFilter filter)
         {
             FilteredList<Vehicle> filteredList = new FilteredList<Vehicle>();
 

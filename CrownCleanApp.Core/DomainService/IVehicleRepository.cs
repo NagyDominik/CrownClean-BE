@@ -19,7 +19,7 @@ namespace CrownCleanApp.Core.DomainService
         /// Retrieve a list of vehicles stored in the database.
         /// </summary>
         /// <returns>A list of vehicles stored in the database.</returns>
-        FilteredList<Vehicle> ReadAll(Filter filter = null);
+        FilteredList<Vehicle> ReadAll(VehicleFilter filter = null);
 
         /// <summary>
         /// Retrieve a single vehicle based on the supplied ID.

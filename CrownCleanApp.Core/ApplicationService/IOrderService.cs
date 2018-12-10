@@ -20,7 +20,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// </summary>
         /// <param name="filter">A filter object used for pagination and filtering</param>
         /// <returns></returns>
-        FilteredList<Order> GetAllOrders(Filter filter);
+        FilteredList<Order> GetAllOrders(OrderFilter filter);
 
         /// <summary>
         /// Retrieve an order based on ID.

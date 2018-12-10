@@ -20,7 +20,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// </summary>
         /// <param name="filter">A filter object used for pagination and filtering</param>
         /// <returns></returns>
-        FilteredList<Vehicle> GetAllVehicles(Filter filter);
+        FilteredList<Vehicle> GetAllVehicles(VehicleFilter filter);
 
         /// <summary>
         /// Retrieve an vehicle based on ID.

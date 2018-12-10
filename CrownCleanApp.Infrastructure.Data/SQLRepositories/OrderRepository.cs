@@ -32,7 +32,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return order;
         }
 
-        public FilteredList<Order> ReadAll(Filter filter = null)
+        public FilteredList<Order> ReadAll(OrderFilter filter = null)
         {
             FilteredList<Order> filteredList = new FilteredList<Order>();
 

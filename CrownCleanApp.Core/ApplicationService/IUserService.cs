@@ -19,7 +19,7 @@ namespace CrownCleanApp.Core.ApplicationService
         /// Return all the user objects located in the database.
         /// </summary>
         /// <returns>All the user objects located in the database.</returns>
-        FilteredList<User> GetAllUsers(Filter filter);
+        FilteredList<User> GetAllUsers(UserFilter filter);
 
         /// <summary>
         /// Fetch a user based on the ID.
