@@ -27,13 +27,13 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                if (filter.CurrentPage == 0 && filter.ItemsPerPage == 0)
+                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize)
                 {
-                    return Ok(_vehicleService.GetAllVehicles(null));
+                    return Ok(_vehicleService.GetAllVehicles(filter));
                 }
                 else
                 {
-                    return Ok(_vehicleService.GetAllVehicles(filter));
+                    return Ok(_vehicleService.GetAllVehicles(null));
                 }
             }
             catch(Exception ex)
