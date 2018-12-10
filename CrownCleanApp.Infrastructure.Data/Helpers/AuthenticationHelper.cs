@@ -6,7 +6,7 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
 {
     public class AuthenticationHelper : IAuthenticationHelper
     {
-        private byte[] secretBytes;
+        private readonly byte[] secretBytes;
 
         public AuthenticationHelper(byte[] secret)
         {
@@ -31,7 +31,7 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
 
@@ -46,7 +46,7 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != storedHash[i]) return false;

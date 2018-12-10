@@ -37,7 +37,6 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
         {
             FilteredList<User> filteredList = new FilteredList<User>();
 
-            // If there is a filter, use it to return the correct number of users
             if (filter != null)
             {
                 #region Filtering
