@@ -115,7 +115,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public FilteredList<User> GetAllUsers(Filter filter = null)
+        public FilteredList<User> GetAllUsers(UserFilter filter = null)
         {
             return _repo.ReadAll(filter);
         }

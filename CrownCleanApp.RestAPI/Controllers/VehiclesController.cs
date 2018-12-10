@@ -23,7 +23,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
-        public ActionResult<FilteredList<Vehicle>> Get([FromQuery] Filter filter)
+        public ActionResult<FilteredList<Vehicle>> Get([FromQuery] VehicleFilter filter)
         {
             try
             {

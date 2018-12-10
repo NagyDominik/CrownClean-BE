@@ -4,6 +4,7 @@ using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -32,17 +33,51 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return deletedUser;
         }
 
-        public FilteredList<User> ReadAll(Filter filter)
+        public FilteredList<User> ReadAll(UserFilter filter)
         {
             FilteredList<User> filteredList = new FilteredList<User>();
 
             // If there is a filter, use it to return the correct number of users
-            if (filter != null && filter.ItemsPerPage > 0 && filter.CurrentPage > 0)
+            if (filter != null)
             {
-                filteredList.List = _ctx.Users
-                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
-                .Take(filter.ItemsPerPage);
-                filteredList.Count = _ctx.Users.Count();
+                #region Filtering
+
+                filteredList.List = _ctx.Users;
+
+                if (!string.IsNullOrEmpty(filter.Name))
+                {
+                    filteredList.List = filteredList.List.Where(u => u.FirstName.Contains(filter.Name) || u.LastName.Contains(filter.Name) || (u.FirstName + " " + u.LastName).Contains(filter.Name));
+                }
+
+                if (!string.IsNullOrEmpty(filter.Email))
+                {
+                    filteredList.List = filteredList.List.Where(u => u.Email.Contains(filter.Email));
+                }
+
+                if (filter.FilterToCustomerType)
+                {
+                    if (filter.IsCompany)
+                    {
+                        filteredList.List = filteredList.List.Where(u => u.IsCompany);
+                    }
+                    else
+                    {
+                        filteredList.List = filteredList.List.Where(u => !u.IsCompany);
+                    }
+                }
+
+                #endregion
+
+                #region Pagination
+
+                if (filter.CurrentPage > 0 && filter.ItemsPerPage > 0)
+                {
+                    filteredList.List = filteredList.List
+                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                    .Take(filter.ItemsPerPage);
+                    filteredList.Count = _ctx.Users.Count();
+                }
+                #endregion
             }
             else
             {

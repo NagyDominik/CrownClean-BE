@@ -25,17 +25,17 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public ActionResult<FilteredList<User>> Get([FromQuery] Filter filter)
+        public ActionResult<FilteredList<User>> Get([FromQuery] UserFilter filter)
         {
             try
             {
-                if (filter.CurrentPage == 0 && filter.ItemsPerPage == 0)
+                if (!string.IsNullOrEmpty(filter.Name) || !string.IsNullOrEmpty(filter.Email))
                 {
-                    return Ok(_userService.GetAllUsers(null));
+                    return Ok(_userService.GetAllUsers(filter));
                 }
                 else
                 {
-                    return Ok(_userService.GetAllUsers(filter));
+                    return Ok(_userService.GetAllUsers(null));
                 }
             }
             catch(Exception ex)

@@ -19,7 +19,7 @@ namespace CrownCleanApp.Core.DomainService
         /// Retrieve the list of users stored in the database.
         /// </summary>
         /// <returns>The list of users stored in the database.</returns>
-        FilteredList<User> ReadAll(Filter filter);
+        FilteredList<User> ReadAll(UserFilter filter);
 
         /// <summary>
         /// Return an individual user based on the ID.

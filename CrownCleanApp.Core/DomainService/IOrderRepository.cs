@@ -19,7 +19,7 @@ namespace CrownCleanApp.Core.DomainService
         /// </summary>
         /// <param name="filter">Used for filtering and pagination.</param>
         /// <returns>All orders stored in the database, filtered using the Filter object.</returns>
-        FilteredList<Order> ReadAll(Filter filter);
+        FilteredList<Order> ReadAll(OrderFilter filter);
 
         /// <summary>
         /// Returns a single order that matches the supplied ID.

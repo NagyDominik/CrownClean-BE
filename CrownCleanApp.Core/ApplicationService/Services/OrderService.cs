@@ -58,7 +58,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public FilteredList<Order> GetAllOrders(Filter filter = null)
+        public FilteredList<Order> GetAllOrders(OrderFilter filter = null)
         {
             return _repo.ReadAll(filter);
         }

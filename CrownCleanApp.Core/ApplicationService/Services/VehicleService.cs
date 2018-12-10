@@ -40,7 +40,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public FilteredList<Vehicle> GetAllVehicles(Filter filter = null)
+        public FilteredList<Vehicle> GetAllVehicles(VehicleFilter filter = null)
         {
             return _repo.ReadAll(filter);
         }

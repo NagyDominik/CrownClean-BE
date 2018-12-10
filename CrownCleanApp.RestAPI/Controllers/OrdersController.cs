@@ -23,7 +23,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public ActionResult<FilteredList<Order>> Get([FromQuery] Filter filter)
+        public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter)
         {
             try
             {
