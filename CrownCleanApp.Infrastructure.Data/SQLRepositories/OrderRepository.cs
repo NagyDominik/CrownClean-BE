@@ -36,13 +36,41 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
         {
             FilteredList<Order> filteredList = new FilteredList<Order>();
 
-            if (filter != null && filter.CurrentPage > 0 && filter.ItemsPerPage > 0)
+
+            if (filter != null)
             {
-                filteredList.List = _ctx.Orders
-                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
-                .Take(filter.ItemsPerPage);
+                #region Filtering
+
+                filteredList.List = _ctx.Orders;
+
+                if (filter.UserID > 0)
+                {
+                    filteredList.List = filteredList.List.Where(o => o.UserID == filter.UserID);
+                }
+
+                if (!string.IsNullOrEmpty(filter.ServicesSearch))
+                {
+                    filteredList.List = filteredList.List.Where(o => o.Services.Contains(filter.ServicesSearch));
+                }
+
+                if (!string.IsNullOrEmpty(filter.DescriptionSearch))
+                {
+                    filteredList.List = filteredList.List.Where(o => o.Description.Contains(filter.DescriptionSearch));
+                }
+
+                #endregion
+
+                #region Pagination
+                if (filter.CurrentPage > 0 && filter.ItemsPerPage > 0)
+                {
+                    filteredList.List = filteredList.List
+                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                    .Take(filter.ItemsPerPage);
+                }
 
                 filteredList.Count = _ctx.Orders.Count();
+
+                #endregion 
             }
             else
             {
