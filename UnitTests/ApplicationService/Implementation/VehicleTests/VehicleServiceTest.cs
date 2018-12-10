@@ -129,12 +129,12 @@ namespace TestCore.ApplicationService.Implementation
             }
 
             var mockRepo = new Mock<IVehicleRepository>();
-            mockRepo.Setup(x => x.ReadAll()).Returns(vehicles);
+            mockRepo.Setup(x => x.ReadAll(null)).Returns(new CrownCleanApp.Core.DomainService.Filtering.FilteredList<Vehicle>() { List = vehicles });
 
             IVehicleService userService = new VehicleService(mockRepo.Object);
-            List<Vehicle> retrievedVehicles = userService.GetAllVehicles();
+            List<Vehicle> retrievedVehicles = userService.GetAllVehicles(null).List.ToList();
 
-            mockRepo.Verify(x => x.ReadAll(), Times.Once);
+            mockRepo.Verify(x => x.ReadAll(null), Times.Once);
             Assert.Equal(vehicles, retrievedVehicles);
 
         }
