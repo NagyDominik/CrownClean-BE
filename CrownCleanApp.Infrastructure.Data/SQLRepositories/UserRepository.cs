@@ -75,8 +75,10 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
                     filteredList.List = filteredList.List
                     .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
                     .Take(filter.ItemsPerPage);
-                    filteredList.Count = _ctx.Users.Count();
                 }
+
+                filteredList.Count = _ctx.Users.Count();
+
                 #endregion
             }
             else
