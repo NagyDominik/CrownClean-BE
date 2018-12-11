@@ -23,17 +23,17 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
-        public ActionResult<List<Vehicle>> Get([FromQuery] VehicleFilter filter)
+        public ActionResult<FilteredList<Vehicle>> Get([FromQuery] VehicleFilter filter)
         {
             try
             {
                 if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize)
                 {
-                    return Ok(_vehicleService.GetAllVehicles(filter).List);
+                    return Ok(_vehicleService.GetAllVehicles(filter));
                 }
                 else
                 {
-                    return Ok(_vehicleService.GetAllVehicles(null).List);
+                    return Ok(_vehicleService.GetAllVehicles(null));
                 }
             }
             catch(Exception ex)
