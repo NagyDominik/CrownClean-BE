@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +23,21 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> Get()
+        public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter)
         {
-            try {
-                return Ok(_service.GetAllOrders());
+            try
+            {
+                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0)
+                {
+                    return Ok(_service.GetAllOrders(filter));
+                }
+                else
+                {
+                    return Ok(_service.GetAllOrders(null));
+                }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }

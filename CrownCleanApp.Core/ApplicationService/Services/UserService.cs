@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 
 namespace CrownCleanApp.Core.ApplicationService.Services
@@ -114,9 +115,9 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.Delete(id);
         }
 
-        public List<User> GetAllUsers()
+        public FilteredList<User> GetAllUsers(UserFilter filter = null)
         {
-            return _repo.ReadAll().ToList();
+            return _repo.ReadAll(filter);
         }
 
         public User GetUserByID(int id)
@@ -144,5 +145,6 @@ namespace CrownCleanApp.Core.ApplicationService.Services
         {
             throw new NotImplementedException();
         }
+
     }
 }

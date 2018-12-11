@@ -1,4 +1,5 @@
-﻿using CrownCleanApp.Core.Entity;
+﻿using CrownCleanApp.Core.DomainService.Filtering;
+using CrownCleanApp.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace CrownCleanApp.Core.DomainService
         /// Retrieve a list of vehicles stored in the database.
         /// </summary>
         /// <returns>A list of vehicles stored in the database.</returns>
-        IEnumerable<Vehicle> ReadAll();
+        FilteredList<Vehicle> ReadAll(VehicleFilter filter = null);
 
         /// <summary>
         /// Retrieve a single vehicle based on the supplied ID.

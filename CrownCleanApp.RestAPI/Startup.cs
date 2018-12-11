@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CrownCleanApp.Core.ApplicationService;
+﻿using CrownCleanApp.Core.ApplicationService;
 using CrownCleanApp.Core.ApplicationService.Services;
 using CrownCleanApp.Core.DomainService;
 using CrownCleanApp.Infrastructure.Data;
+using CrownCleanApp.Infrastructure.Data.Managers;
 using CrownCleanApp.Infrastructure.Data.SQLRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CrownCleanApp.RestAPI
 {
@@ -25,6 +25,8 @@ namespace CrownCleanApp.RestAPI
         private IConfiguration _conf { get; }
 
         private IHostingEnvironment _env { get; set; }
+
+        // TODO: set proper values for configuration in appsettings.json
 
         public Startup(IHostingEnvironment env)
         {
@@ -37,11 +39,14 @@ namespace CrownCleanApp.RestAPI
             _conf = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            byte[] secretBytes = new byte[40];
+            RNGCryptoServiceProvider rngCryptoService = new RNGCryptoServiceProvider();
+            rngCryptoService.GetBytes(secretBytes);
+
             if (_env.IsDevelopment()) {
                 services.AddDbContext<CrownCleanAppContext>(
                     opt => opt.UseSqlite("Data Source=CrownCleanApp.db"));
@@ -52,6 +57,26 @@ namespace CrownCleanApp.RestAPI
                         .UseSqlServer(_conf.GetConnectionString("defaultConnection")));
             }
 
+                    services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = _conf["JwtIssuer"],
+                    ValidAudience = _conf["JwtIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["JwtKey"])),
+                    ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                };
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
@@ -59,6 +84,8 @@ namespace CrownCleanApp.RestAPI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IOrderService, OrderService>();
+
+            services.AddSingleton<IAuthenticationHelper>(new AuthenticationHelper(secretBytes));
 
             services.AddCors();
 

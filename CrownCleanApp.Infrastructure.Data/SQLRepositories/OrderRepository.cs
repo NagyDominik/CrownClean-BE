@@ -1,4 +1,5 @@
 ﻿using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,9 +32,53 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return order;
         }
 
-        public IEnumerable<Order> ReadAll()
+        public FilteredList<Order> ReadAll(OrderFilter filter = null)
         {
-            return _ctx.Orders;
+            FilteredList<Order> filteredList = new FilteredList<Order>();
+
+
+            if (filter != null)
+            {
+                #region Filtering
+
+                filteredList.List = _ctx.Orders;
+
+                if (filter.UserID > 0)
+                {
+                    filteredList.List = filteredList.List.Where(o => o.UserID == filter.UserID);
+                }
+
+                if (!string.IsNullOrEmpty(filter.ServicesSearch))
+                {
+                    filteredList.List = filteredList.List.Where(o => o.Services.Contains(filter.ServicesSearch));
+                }
+
+                if (!string.IsNullOrEmpty(filter.DescriptionSearch))
+                {
+                    filteredList.List = filteredList.List.Where(o => o.Description.Contains(filter.DescriptionSearch));
+                }
+
+                #endregion
+
+                #region Pagination
+                if (filter.CurrentPage > 0 && filter.ItemsPerPage > 0)
+                {
+                    filteredList.List = filteredList.List
+                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                    .Take(filter.ItemsPerPage);
+                }
+
+                filteredList.Count = _ctx.Orders.Count();
+
+                #endregion 
+            }
+            else
+            {
+                filteredList.List = _ctx.Orders;
+                filteredList.Count = _ctx.Orders.Count();
+            }
+
+            return filteredList;
         }
 
         public Order ReadByID(int id)

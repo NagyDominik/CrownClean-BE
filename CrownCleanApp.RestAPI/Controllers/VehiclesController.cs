@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,18 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
-        public ActionResult<List<Vehicle>> Get()
+        public ActionResult<FilteredList<Vehicle>> Get([FromQuery] VehicleFilter filter)
         {
             try
             {
-                return this._vehicleService.GetAllVehicles();
+                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize)
+                {
+                    return Ok(_vehicleService.GetAllVehicles(filter));
+                }
+                else
+                {
+                    return Ok(_vehicleService.GetAllVehicles(null));
+                }
             }
             catch(Exception ex)
             {

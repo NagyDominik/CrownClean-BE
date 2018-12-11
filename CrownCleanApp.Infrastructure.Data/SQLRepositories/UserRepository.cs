@@ -1,8 +1,10 @@
 ﻿using CrownCleanApp.Core.DomainService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -31,9 +33,60 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             return deletedUser;
         }
 
-        public IEnumerable<User> ReadAll()
+        public FilteredList<User> ReadAll(UserFilter filter)
         {
-            return _ctx.Users;
+            FilteredList<User> filteredList = new FilteredList<User>();
+
+            if (filter != null)
+            {
+                #region Filtering
+
+                filteredList.List = _ctx.Users;
+
+                if (!string.IsNullOrEmpty(filter.Name))
+                {
+                    filteredList.List = filteredList.List.Where(u => u.FirstName.Contains(filter.Name) || u.LastName.Contains(filter.Name) || (u.FirstName + " " + u.LastName).Contains(filter.Name));
+                }
+
+                if (!string.IsNullOrEmpty(filter.Email))
+                {
+                    filteredList.List = filteredList.List.Where(u => u.Email.Contains(filter.Email));
+                }
+
+                if (filter.FilterToCustomerType)
+                {
+                    if (filter.IsCompany)
+                    {
+                        filteredList.List = filteredList.List.Where(u => u.IsCompany);
+                    }
+                    else
+                    {
+                        filteredList.List = filteredList.List.Where(u => !u.IsCompany);
+                    }
+                }
+
+                #endregion
+
+                #region Pagination
+
+                if (filter.CurrentPage > 0 && filter.ItemsPerPage > 0)
+                {
+                    filteredList.List = filteredList.List
+                    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                    .Take(filter.ItemsPerPage);
+                }
+
+                filteredList.Count = _ctx.Users.Count();
+
+                #endregion
+            }
+            else
+            {
+                filteredList.List = _ctx.Users;
+                filteredList.Count = filteredList.List.Count();
+            }
+
+            return filteredList;
         }
 
         public User ReadByID(int id)
@@ -48,5 +101,6 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             _ctx.SaveChanges();
             return user;
         }
+
     }
 }

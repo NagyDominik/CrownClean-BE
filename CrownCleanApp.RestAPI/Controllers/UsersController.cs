@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
+using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,11 +25,18 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public ActionResult<List<User>> Get()
+        public ActionResult<FilteredList<User>> Get([FromQuery] UserFilter filter)
         {
             try
             {
-                return Ok(_userService.GetAllUsers());
+                if (!string.IsNullOrEmpty(filter.Name) || !string.IsNullOrEmpty(filter.Email))
+                {
+                    return Ok(_userService.GetAllUsers(filter));
+                }
+                else
+                {
+                    return Ok(_userService.GetAllUsers(null));
+                }
             }
             catch(Exception ex)
             {
