@@ -23,17 +23,17 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public ActionResult<List<Order>> Get([FromQuery] OrderFilter filter)
+        public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter)
         {
             try
             {
                 if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0)
                 {
-                    return Ok(_service.GetAllOrders(filter).List);
+                    return Ok(_service.GetAllOrders(filter));
                 }
                 else
                 {
-                    return Ok(_service.GetAllOrders(null).List);
+                    return Ok(_service.GetAllOrders(null));
                 }
             }
             catch (Exception e)
