@@ -9,22 +9,6 @@ namespace CrownCleanApp.RestAPI.DTOs
 {
     public class RegisterDTO
     {
-        /// <summary>
-        /// Custom validation attribute to validate the address list.
-        /// </summary>
-        class ListValidationAttribute : ValidationAttribute
-        {
-            public override bool IsValid(object value)
-            {
-                var list = value as IList;
-                if (list == null)
-                {
-                    return false;
-                }
-                return list.Count > 0;
-            }
-        }
-
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -41,7 +25,6 @@ namespace CrownCleanApp.RestAPI.DTOs
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
         [Required]
-        [ListValidation(ErrorMessage = "At least one address is required!")]
-        public List<string> Addresses { get; set; }
+        public string Address { get; set; }
     }
 }

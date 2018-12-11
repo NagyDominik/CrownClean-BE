@@ -36,9 +36,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                byte[] pwHash, pwSalt;
-
-                _authenticationHelper.CreatePasswordHash(dto.Password, out pwHash, out pwSalt);
+                _authenticationHelper.CreatePasswordHash(dto.Password, out byte[] pwHash, out byte[] pwSalt);
 
                 var user = new User()
                 {
@@ -47,14 +45,14 @@ namespace CrownCleanApp.RestAPI.Controllers
                     Email = dto.Email,
                     IsCompany = dto.IsCompany,
                     PhoneNumber = dto.PhoneNumber,
-                    Addresses = dto.Addresses,
+                    Addresses = new List<string>() { dto.Address},
                     PasswordHash = pwHash,
                     PasswordSalt = pwSalt
                 };
 
                 User userFound = _userService.AddUser(user);
 
-                return Ok(_tokenManager.GenerateJwtToken(userFound));
+                return Ok(new { token = _tokenManager.GenerateJwtToken(userFound)});
             }
             catch(Exception e)
             {
