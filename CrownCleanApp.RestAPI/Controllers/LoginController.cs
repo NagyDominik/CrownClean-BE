@@ -52,7 +52,8 @@ namespace CrownCleanApp.RestAPI.Controllers
 
                 User userFound = _userService.AddUser(user);
 
-                return Ok(new { token = _tokenManager.GenerateJwtToken(userFound)});
+                //return Ok(new { token = _tokenManager.GenerateJwtToken(userFound)});
+                return Ok("USER_ADDED");
             }
             catch(Exception e)
             {
@@ -68,6 +69,11 @@ namespace CrownCleanApp.RestAPI.Controllers
                 User user = _userService.GetAllUsers(null).List.FirstOrDefault(u => u.Email == dto.Email);
 
                 if (user == null)
+                {
+                    return Unauthorized();
+                }
+
+                if (!user.IsApproved)
                 {
                     return Unauthorized();
                 }
