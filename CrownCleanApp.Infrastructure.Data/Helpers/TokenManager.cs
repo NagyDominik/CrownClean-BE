@@ -27,13 +27,14 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("firstName", user.FirstName),
                 new Claim("emailAddress", user.Email),
                 new Claim("id", user.ID.ToString())
             };
 
             if (user.IsAdmin)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+                claims.Add(new Claim("role", "Administrator"));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));

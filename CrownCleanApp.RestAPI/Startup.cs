@@ -103,7 +103,7 @@ namespace CrownCleanApp.RestAPI
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope()) {
                     var ctx = scope.ServiceProvider.GetService<CrownCleanAppContext>();
-                    DBInitializer.SeedDB(ctx);
+                    DBInitializer.SeedDB(ctx, new AuthenticationHelper(Encoding.UTF8.GetBytes("Random secret")));
                 }
             }
             else {
