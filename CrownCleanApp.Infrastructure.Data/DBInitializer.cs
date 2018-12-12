@@ -1,4 +1,5 @@
 ﻿using CrownCleanApp.Core.Entity;
+using CrownCleanApp.Infrastructure.Data.Managers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,43 +8,73 @@ namespace CrownCleanApp.Infrastructure.Data
 {
     public class DBInitializer
     {
-        public static void SeedDB(CrownCleanAppContext ctx)
+
+        public static void SeedDB(CrownCleanAppContext ctx, IAuthenticationHelper authenticationHelper)
         {
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
 
             var testUser = new User() {
                 ID = 1,
-                Email = "testEmail@fakeemail.dk",
-                FirstName = "Test",
-                LastName = "Testenson",
+                Email = "john@mail.dk",
+                FirstName = "John",
+                LastName = "Johnson",
                 IsAdmin = false,
                 IsApproved = true,
                 PhoneNumber = "+45558587489",
                 IsCompany = false,
                 Addresses = new List<string>()
                 {
-                   "asdasd",
-                   "weqwdqwe"
+                    "7 Sunbrook Drive"
                 },
             };
+
+            authenticationHelper.CreatePasswordHash("Password123", out byte[] tpwHash, out byte[] tpwSalt);
+            testUser.PasswordHash = tpwHash;
+            testUser.PasswordSalt = tpwSalt;
 
             var testUser2 = new User() {
                 ID = 2,
-                Email = "test2Email@fakeemail.dk",
-                FirstName = "Testicy",
-                LastName = "Testensonion",
-                IsAdmin = true,
+                Email = "mail@mail.dk",
+                FirstName = "Grace",
+                LastName = "Emms",
+                IsAdmin = false,
                 IsApproved = false,
-                PhoneNumber = "+4523123",
+                PhoneNumber = "+452312345",
                 IsCompany = false,
                 Addresses = new List<string>()
                 {
-                   "asd street 2"
+                   "715 Barnett Trail",
+                   "4 Eliot Junction"
                 },
             };
 
-            var testVehicle = new Vehicle() {
+            authenticationHelper.CreatePasswordHash("Password123", out byte[] t1pwHash, out byte[] t1pwSalt);
+            testUser2.PasswordHash = t1pwHash;
+            testUser2.PasswordSalt = t1pwSalt;
+
+            var admin = new User()
+            {
+                ID = 3,
+                Email = "admin@admin.dk",
+                FirstName = "Admin",
+                LastName = "Admin",
+                IsAdmin = true,
+                IsApproved = true,
+                IsCompany = false,
+                PhoneNumber = "+45552515211",
+                Addresses = new List<string>()
+                {
+                    "Admin address 1"
+                },
+            };
+
+            authenticationHelper.CreatePasswordHash("Password123", out byte[] passwordHash, out byte[] passwordSalt);
+            admin.PasswordHash = passwordHash;
+            admin.PasswordSalt = passwordSalt;
+
+            var testVehicle = new Vehicle()
+            {
                 ID = 11,
                 Brand = "BMW",
                 UniqueID = "ASD123",
@@ -98,6 +129,7 @@ namespace CrownCleanApp.Infrastructure.Data
                 IsApproved = false
             };
 
+            ctx.Users.Add(admin);
             ctx.Users.Add(testUser);
             ctx.Users.Add(testUser2);
 
