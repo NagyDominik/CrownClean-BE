@@ -138,7 +138,17 @@ namespace CrownCleanApp.Core.ApplicationService.Services
                 throw new InvalidDataException("Input is null!");
             }
 
-            return _repo.Update(user);
+            User userUpdate = GetUserByID(user.ID);
+
+            foreach (var fromProp in typeof(User).GetProperties()) {
+                var toProp = typeof(User).GetProperty(fromProp.Name);
+                var toValue = toProp.GetValue(user);
+                if (toValue != null) {
+                    fromProp.SetValue(userUpdate, toValue);
+                }
+            }
+
+            return _repo.Update(userUpdate);
         }
 
         public User UpdateUserPassword(User user)

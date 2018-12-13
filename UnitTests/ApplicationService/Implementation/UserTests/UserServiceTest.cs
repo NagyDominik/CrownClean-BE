@@ -275,6 +275,8 @@ namespace TestCore.ApplicationService.Implementation
                 IsAdmin = false
             };
 
+            moqRep.Setup(x => x.ReadByID(user.ID)).Returns(user);
+
             userService.UpdateUser(user);
             moqRep.Verify(x => x.Update(user));
         }

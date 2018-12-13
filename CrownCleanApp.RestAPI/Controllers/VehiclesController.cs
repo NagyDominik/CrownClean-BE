@@ -79,7 +79,7 @@ namespace CrownCleanApp.RestAPI.Controllers
             {
                 if (vehicle.ID != 0)
                 {
-                    return BadRequest("Cannot add an already existing vehicle!");
+                    return BadRequest("Cannot add vehicle with ID!");
                 }
 
                 Vehicle tmp = this._vehicleService.AddVehicle(vehicle);
