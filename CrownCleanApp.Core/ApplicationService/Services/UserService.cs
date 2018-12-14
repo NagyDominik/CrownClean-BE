@@ -141,10 +141,12 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             User userUpdate = GetUserByID(user.ID);
 
             foreach (var fromProp in typeof(User).GetProperties()) {
-                var toProp = typeof(User).GetProperty(fromProp.Name);
-                var toValue = toProp.GetValue(user);
-                if (toValue != null) {
-                    fromProp.SetValue(userUpdate, toValue);
+                if (!fromProp.Name.Equals("IsApproved")) {
+                    var toProp = typeof(User).GetProperty(fromProp.Name);
+                    var toValue = toProp.GetValue(user);
+                    if (toValue != null && !toValue.Equals(0) && !toValue.Equals("")) {
+                        fromProp.SetValue(userUpdate, toValue);
+                    }
                 }
             }
 

@@ -43,8 +43,10 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             if (orderUpdate != null) {
                 if (orderUpdate.IsApproved)
                     throw new InvalidDataException("Cannot approve order with approved status!");
-                else
+                else { 
                     orderUpdate.IsApproved = true;
+                    orderUpdate.ApproveDate = DateTime.Now;
+                }
             }
             else
                 throw new InvalidDataException("There is no order with the ID of " + id + " in the database!");
