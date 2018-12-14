@@ -29,7 +29,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(filter.Name) || !string.IsNullOrEmpty(filter.Email))
+                if (!string.IsNullOrEmpty(filter.Name) || !string.IsNullOrEmpty(filter.Email) || filter.ItemsPerPage > 0)
                 {
                     return Ok(_userService.GetAllUsers(filter));
                 }

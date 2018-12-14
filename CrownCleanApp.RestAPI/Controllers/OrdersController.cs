@@ -27,7 +27,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0)
+                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0 || filter.ItemsPerPage > 0)
                 {
                     return Ok(_service.GetAllOrders(filter));
                 }
