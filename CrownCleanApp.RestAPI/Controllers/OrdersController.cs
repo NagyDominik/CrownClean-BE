@@ -29,10 +29,20 @@ namespace CrownCleanApp.RestAPI.Controllers
             {
                 if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0 || filter.ItemsPerPage > 0)
                 {
+                    if (filter.UserID > 0)
+                    {
+                        Ok(_service.GetOrdersOfACustomer(filter, filter.UserID));
+                    }
+
                     return Ok(_service.GetAllOrders(filter));
                 }
                 else
                 {
+                    if (filter.UserID > 0)
+                    {
+                        Ok(_service.GetOrdersOfACustomer(null, filter.UserID));
+                    }
+
                     return Ok(_service.GetAllOrders(null));
                 }
             }
@@ -41,6 +51,26 @@ namespace CrownCleanApp.RestAPI.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        /*[HttpGet("{id}")]
+        public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter, int id)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0 || filter.ItemsPerPage > 0)
+                {
+                    return Ok(_service.GetOrdersOfACustomer(filter, id));
+                }
+                else
+                {
+                    return Ok(_service.GetOrdersOfACustomer(null, id));
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }*/
 
         // GET: api/Orders/5
         [HttpGet("{id}")]

@@ -23,6 +23,14 @@ namespace CrownCleanApp.Core.ApplicationService
         FilteredList<Order> GetAllOrders(OrderFilter filter);
 
         /// <summary>
+        /// Return the orders of a specific customer
+        /// </summary>
+        /// <param name="filter">A filter object used for pagination and filtering</param>
+        /// <param name="id">The ID of the customer whose orders are returned.</param>
+        /// <returns>The orders of the specified user.</returns>
+        FilteredList<Order> GetOrdersOfACustomer(OrderFilter filter, int id);
+
+        /// <summary>
         /// Retrieve an order based on ID.
         /// </summary>
         /// <param name="id">The ID of the order that will be retrieved.</param>
