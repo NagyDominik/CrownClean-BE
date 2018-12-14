@@ -34,6 +34,8 @@ namespace CrownCleanApp.Infrastructure.Data
             testUser.PasswordHash = tpwHash;
             testUser.PasswordSalt = tpwSalt;
 
+            ctx.Users.Add(testUser);
+
             var testUser2 = new User() {
                 ID = 2,
                 Email = "mail@mail.dk",
@@ -50,9 +52,13 @@ namespace CrownCleanApp.Infrastructure.Data
                 },
             };
 
+
             authenticationHelper.CreatePasswordHash("Password123", out byte[] t1pwHash, out byte[] t1pwSalt);
             testUser2.PasswordHash = t1pwHash;
             testUser2.PasswordSalt = t1pwSalt;
+
+
+            ctx.Users.Add(testUser);
 
             var admin = new User()
             {
@@ -74,20 +80,29 @@ namespace CrownCleanApp.Infrastructure.Data
             admin.PasswordHash = passwordHash;
             admin.PasswordSalt = passwordSalt;
 
-            var testVehicle = new Vehicle()
+            ctx.Users.Add(admin);
+
+            for (int i = 0; i < 50; i++)
             {
-                ID = 11,
-                Brand = "BMW",
-                UniqueID = "ASD123",
-                Type = "SUV",
-                User = new User() { ID = 1 },
-                Size = 2.0f,
-                InternalPlus = true
-            };
+                var testVehicle = new Vehicle()
+                {
+                    ID = 4 + i,
+                    Brand = $"BMW #{i + 1}",
+                    UniqueID = "ASD123",
+                    Type = "SUV",
+                    User = new User() { ID = 1 },
+                    Size = 2.0f,
+                    InternalPlus = (i % 2 == 0)
+                };
+
+                ctx.Vehicles.Add(testVehicle);
+            }
+
+
 
             var testVehicle2 = new Vehicle()
             {
-                ID = 12,
+                ID = 1,
                 Brand = "Kia",
                 UniqueID = "ASD456",
                 Type = "Saloon",
@@ -97,7 +112,7 @@ namespace CrownCleanApp.Infrastructure.Data
             };
 
             var testVehicle3 = new Vehicle() {
-                ID = 13,
+                ID = 2,
                 Brand = "Trabant",
                 UniqueID = "EFG123",
                 Type = "Saloon",
@@ -133,11 +148,8 @@ namespace CrownCleanApp.Infrastructure.Data
                 IsApproved = false
             };
 
-            ctx.Users.Add(admin);
-            ctx.Users.Add(testUser);
-            ctx.Users.Add(testUser2);
 
-            ctx.Vehicles.Add(testVehicle);
+
             ctx.Vehicles.Add(testVehicle2);
             ctx.Vehicles.Add(testVehicle3);
 
