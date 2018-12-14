@@ -11,14 +11,14 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
     public class TokenManager
     {
         private readonly string _jwtKey;
-        private readonly double _jwtExpireDays;
+        private readonly double _JwtExpireDays;
         private readonly string _jwtIssuer;
 
 
-        public TokenManager(string jwtKey, double jwtExpireDays, string jwtIssuer)
+        public TokenManager(string jwtKey, double JwtExpireDays, string jwtIssuer)
         {
             this._jwtKey = jwtKey;
-            this._jwtExpireDays = jwtExpireDays;
+            this._JwtExpireDays = JwtExpireDays;
             this._jwtIssuer = jwtIssuer;
         }
 
@@ -39,7 +39,7 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(_jwtExpireDays);
+            var expires = DateTime.Now.AddDays(_JwtExpireDays);
 
             var token = new JwtSecurityToken(
                 _jwtIssuer,
