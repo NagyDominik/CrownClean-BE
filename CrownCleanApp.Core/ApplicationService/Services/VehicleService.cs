@@ -45,6 +45,13 @@ namespace CrownCleanApp.Core.ApplicationService.Services
             return _repo.ReadAll(filter);
         }
 
+        public FilteredList<Vehicle> GetVehiclesOfACustomer(VehicleFilter filter, int id)
+        {
+            if (id == 0)
+                throw new InvalidDataException("Cannot get vehicle by ID without user ID!");
+            return _repo.ReadAll(filter);
+        }
+
         public Vehicle GetVehicleByID(int id)
         {
             if (id == 0)

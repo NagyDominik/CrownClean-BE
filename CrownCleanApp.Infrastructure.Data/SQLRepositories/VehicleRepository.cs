@@ -41,7 +41,12 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             {
                 #region Filtering
 
-                filteredList.List = _ctx.Vehicles;
+                filteredList.List = _ctx.Vehicles.Include(v => v.User);
+
+                if (filter.UserID > 0)
+                {
+                    filteredList.List = filteredList.List.Where(v => v.User.ID == filter.UserID);
+                }
 
                 if (!string.IsNullOrEmpty(filter.Brand))
                 {
@@ -94,7 +99,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
             else
             {
                 filteredList.List = _ctx.Vehicles;
-                filteredList.Count = filteredList.List.Count();
+                filteredList.Count = _ctx.Vehicles.Count();
             }
 
             return filteredList;

@@ -8,6 +8,7 @@ namespace CrownCleanApp.Core.DomainService.Filtering
     {
         //TODO: figure out a better way to filter size
 
+        public int UserID { get; set; }
         public string UniqueID { get; set; }
         public string Type { get; set; }
         public string Brand { get; set; }
