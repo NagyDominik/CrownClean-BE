@@ -31,6 +31,7 @@ namespace CrownCleanApp.Core.ApplicationService.Services
                 throw new InvalidDataException("Cannot add order without service!");
             order.UserID = order.User.ID;
             order.VehicleID = order.Vehicle.ID;
+            order.OrderDate = DateTime.Now;
             return _repo.Create(order);
         }
 
