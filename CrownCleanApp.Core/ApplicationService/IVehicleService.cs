@@ -29,6 +29,13 @@ namespace CrownCleanApp.Core.ApplicationService
         /// <returns>The vehicle with the supplied ID if exists, null otherwise.</returns>
         Vehicle GetVehicleByID(int id);
 
+        /// <summary>
+        /// Return the vehicles of a specific customer
+        /// </summary>
+        /// <param name="filter">A filter object used for pagination and filtering</param>
+        /// <param name="id">The ID of the customer whose vehicles are returned.</param>
+        /// <returns>The vehicles of the specified user.</returns>
+        FilteredList<Vehicle> GetVehiclesOfACustomer(VehicleFilter filter, int id);
 
         /// <summary>
         /// Update an already existing vehicle in the database.

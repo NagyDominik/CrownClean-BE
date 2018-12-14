@@ -76,9 +76,8 @@ namespace CrownCleanApp.Core.ApplicationService.Services
         public FilteredList<Order> GetOrdersOfACustomer(OrderFilter filter, int id)
         {
             if (id == 0)
-                throw new InvalidDataException("Cannot get order by ID without ID!");
-            var orders = _repo.ReadAll(filter).List.Where(o => o.UserID == id);
-            return new FilteredList<Order>() { Count = orders.Count(), List = orders  };
+                throw new InvalidDataException("Cannot get order by ID without user ID!");
+            return _repo.ReadAll(filter);
         }
 
         public Order UpdateOrder(Order order)

@@ -48,6 +48,11 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
                     filteredList.List = filteredList.List.Where(o => o.UserID == filter.UserID);
                 }
 
+                if (filter.UserID > 0)
+                {
+                    filteredList.List = filteredList.List.Where(o => o.UserID == filter.UserID);
+                }
+
                 if (!string.IsNullOrEmpty(filter.ServicesSearch))
                 {
                     filteredList.List = filteredList.List.Where(o => o.Services.Contains(filter.ServicesSearch));
