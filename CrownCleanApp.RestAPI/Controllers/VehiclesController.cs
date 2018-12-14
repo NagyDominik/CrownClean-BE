@@ -27,7 +27,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize)
+                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize || filter.ItemsPerPage > 0)
                 {
                     return Ok(_vehicleService.GetAllVehicles(filter));
                 }

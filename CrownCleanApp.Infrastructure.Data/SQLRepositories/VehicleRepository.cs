@@ -87,7 +87,7 @@ namespace CrownCleanApp.Infrastructure.Data.SQLRepositories
                     .Take(filter.ItemsPerPage);
                 }
 
-                filteredList.Count = _ctx.Users.Count();
+                filteredList.Count = _ctx.Vehicles.Count();
 
                 #endregion
             }
