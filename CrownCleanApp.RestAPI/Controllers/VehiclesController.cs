@@ -79,7 +79,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                     int.TryParse(userIDFromAuth, out int userID);
 
                     // Check if the user is trying to access another user's order
-                    if (vehicle.User.ID != id)
+                    if (vehicle.User.ID != vehicle.User.ID)
                     {
                         return Forbid();
                     }

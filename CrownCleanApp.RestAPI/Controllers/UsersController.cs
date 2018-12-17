@@ -122,22 +122,47 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public ActionResult<User> Put([FromBody] User user)
         {
             try
             {
-                User tmp = _userService.UpdateUser(user);
+                User tmp = _userService.GetUserByID(user.ID);
 
                 if (tmp == null)
                 {
-                    return BadRequest("Could not update User!");
+                    return BadRequest("Could not found User!");
+                }
+
+
+                // Administrators can update the details of any user
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to access the details of another user using its own walid JWT.
+                    if (userID != user.ID)
+                    {
+                        return Forbid();
+                    }
+                }
+
+                tmp = _userService.UpdateUser(user);
+
+                if (tmp == null)
+                {
+                    return BadRequest("Could not found User!");
                 }
                 else
                 {
+
                     String s = String.Format($"The user with ID of {tmp.ID} was updated!");
                     return Ok(s);
                 }
+
 
             }
             catch(Exception ex)

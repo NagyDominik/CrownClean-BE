@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace CrownCleanApp.RestAPI.DTOs
 {
+    /// <summary>
+    /// A simple object used to transfer login data betweenb the frontend and the backend. 
+    /// Only contains fields that are required to create a new user.
+    /// </summary>
     public class RegisterDTO
     {
         [Required]
