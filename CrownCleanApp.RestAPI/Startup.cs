@@ -73,10 +73,10 @@ namespace CrownCleanApp.RestAPI
                 cfg.SaveToken = true;
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
-                    //ValidIssuer = _conf["JwtIssuer"],
-                    //ValidAudience = _conf["JwtIssuer"],
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidIssuer = _conf["JwtIssuer"],
+                    ValidAudience = _conf["JwtIssuer"],
+                    //ValidateIssuer = false,
+                    //ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["JwtKey"])),
                     ClockSkew = TimeSpan.FromMinutes(2) // remove delay of token when expire
                 };

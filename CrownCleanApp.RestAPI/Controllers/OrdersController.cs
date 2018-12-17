@@ -140,8 +140,31 @@ namespace CrownCleanApp.RestAPI.Controllers
             if (id == 0)
                 BadRequest("Order ID must be provided!");
 
-            try {
-                return Ok(_service.DeleteOrder(id));
+            try
+            {
+                Order tmp = this._service.GetOrderByID(id);
+
+                if (tmp == null)
+                {
+                    return BadRequest($"Could not delete the order with the ID of {id}");
+                }
+
+                // Administrators can delete any order
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to delete someone else's order
+                    if (userID != tmp.UserID)
+                    {
+                        return Forbid();
+                    }
+                }
+
+                return Ok(this._service.DeleteOrder(id));
             }
             catch (Exception e) {
                 return BadRequest(e.Message);

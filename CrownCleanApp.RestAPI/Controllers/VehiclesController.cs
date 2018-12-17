@@ -159,7 +159,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public ActionResult<Vehicle> Delete(int id)
         {
             try
@@ -170,7 +170,25 @@ namespace CrownCleanApp.RestAPI.Controllers
                     return BadRequest("Cannot delete non-existing vehicle!");
                 }
 
-                Vehicle tmp = this._vehicleService.DeleteVehicle(id);
+                Vehicle tmp = this._vehicleService.GetVehicleByID(id);
+
+
+                // Administrators can delete any vehicle
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to delete someone else's vehicle
+                    if (userID != tmp.User.ID)
+                    {
+                        return Forbid();
+                    }
+                }
+
+                tmp = this._vehicleService.DeleteVehicle(id);
 
                 if (tmp == null)
                 {
