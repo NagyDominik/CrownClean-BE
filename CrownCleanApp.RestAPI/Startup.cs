@@ -44,10 +44,6 @@ namespace CrownCleanApp.RestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
-            byte[] secretBytes = new byte[40];
-            RNGCryptoServiceProvider rngCryptoService = new RNGCryptoServiceProvider();
-            rngCryptoService.GetBytes(secretBytes);
 
             if (_env.IsDevelopment()) {
                 services.AddDbContext<CrownCleanAppContext>(
@@ -90,7 +86,7 @@ namespace CrownCleanApp.RestAPI
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IOrderService, OrderService>();
 
-            services.AddSingleton<IAuthenticationHelper>(new AuthenticationHelper(secretBytes));
+            services.AddSingleton<IAuthenticationHelper>(new AuthenticationHelper());
 
             services.AddCors();
 
@@ -108,7 +104,7 @@ namespace CrownCleanApp.RestAPI
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope()) {
                     var ctx = scope.ServiceProvider.GetService<CrownCleanAppContext>();
-                    DBInitializer.SeedDB(ctx, new AuthenticationHelper(Encoding.UTF8.GetBytes("Random secret")));
+                    DBInitializer.SeedDB(ctx, new AuthenticationHelper());
                 }
             }
             else {

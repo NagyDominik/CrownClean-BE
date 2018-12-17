@@ -6,17 +6,15 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
 {
     public class AuthenticationHelper : IAuthenticationHelper
     {
-        private readonly byte[] secretBytes;
 
-        public AuthenticationHelper(byte[] secret)
+        public AuthenticationHelper()
         {
-            secretBytes = secret;
         }
 
         // This method computes a hashed and salted password using the HMACSHA512 algorithm.
         // The HMACSHA512 class computes a Hash-based Message Authentication Code (HMAC) using 
         // the SHA512 hash function. When instantiated with the parameterless constructor (as
-        // here) a randomly Key is generated. This key is used as a password salt.
+        // here) a random Key is generated. This key is used as a password salt.
 
         // The computation is performed as shown below:
         //   passwordHash = SHA512(password + Key)
