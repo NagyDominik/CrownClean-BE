@@ -25,7 +25,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter)
         {
             try
@@ -70,6 +70,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                 
                 // Administrators can access the details of all orders
                 if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+
                 {
                     // Retrieve the id of the user, as stored in the JWT
                     var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
@@ -77,7 +78,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                     int.TryParse(userIDFromAuth, out int userID);
 
                     // Check if the user is trying to access another user's order
-                    if (order.UserID != id)
+                    if (order.UserID != userID)
                     {
                         return Forbid();
                     }
