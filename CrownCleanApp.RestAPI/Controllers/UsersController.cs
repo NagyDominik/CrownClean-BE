@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
 using CrownCleanApp.Core.DomainService.Filtering;
@@ -25,6 +26,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Authorize]
         public ActionResult<FilteredList<User>> Get([FromQuery] UserFilter filter)
         {
             try
@@ -46,6 +48,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<User> Get(int id)
         {
             try
@@ -54,6 +57,22 @@ namespace CrownCleanApp.RestAPI.Controllers
                 {
                     return BadRequest("ID must be bigger than 0!");
                 }
+
+                // Administrators can access the details of other users
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to access the details of another user using its own walid JWT.
+                    if (userID != id)
+                    {
+                        return Forbid();
+                    }
+                }
+                
 
                 User user = _userService.GetUserByID(id);
 
@@ -72,6 +91,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // POST: api/Users
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<User> Post([FromBody] User user)
         {
             try
@@ -102,6 +122,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<User> Put([FromBody] User user)
         {
             try
@@ -127,10 +148,13 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<User> Delete(int id)
         {
             try
             {
+                var a = HttpContext.Items;
+
                 if (id < 1)
                 {
                     return BadRequest("Cannot delete non-existing user!");
@@ -156,6 +180,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         }
 
         [HttpPut("approve/{id}")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<Order> Approve(int id)
         {
             if (id == 0)

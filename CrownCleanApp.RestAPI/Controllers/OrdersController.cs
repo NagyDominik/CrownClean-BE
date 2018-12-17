@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
 using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +25,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<FilteredList<Order>> Get([FromQuery] OrderFilter filter)
         {
             try
@@ -54,13 +57,39 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<Order> Get(int id)
         {
             if (id <= 0) {
                 BadRequest("ID must be greater than 0!");
             }
             try {
-                return Ok(_service.GetOrderByID(id));
+
+                Order order = _service.GetOrderByID(id);
+
+                
+                // Administrators can access the details of all orders
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to access another user's order
+                    if (order.UserID != id)
+                    {
+                        return Forbid();
+                    }
+                }
+
+                if (order == null)
+                {
+                    return BadRequest($"Could not find the order with the id of {id}");
+                }
+
+                return Ok(order);
+            
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
@@ -69,6 +98,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // POST: api/Orders
         [HttpPost]
+        [Authorize]
         public ActionResult<Order> Post([FromBody] Order order)
         {
             if (order.ID != 0)
@@ -87,6 +117,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // PUT: api/Orders/5
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<Order> Put(int id, [FromBody] Order order)
         {
             if (order.ID == 0)
@@ -102,6 +133,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<Order> Delete(int id)
         {
             if (id == 0)
@@ -116,6 +148,7 @@ namespace CrownCleanApp.RestAPI.Controllers
         }
 
         [HttpPut("approve/{id}")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<Order> Approve(int id)
         {
             if (id == 0)

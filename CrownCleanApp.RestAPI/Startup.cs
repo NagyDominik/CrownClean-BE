@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -37,12 +38,13 @@ namespace CrownCleanApp.RestAPI
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             _conf = builder.Build();
+            
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+        
             byte[] secretBytes = new byte[40];
             RNGCryptoServiceProvider rngCryptoService = new RNGCryptoServiceProvider();
             rngCryptoService.GetBytes(secretBytes);
@@ -50,6 +52,7 @@ namespace CrownCleanApp.RestAPI
             if (_env.IsDevelopment()) {
                 services.AddDbContext<CrownCleanAppContext>(
                     opt => opt.UseSqlite("Data Source=CrownCleanApp.db"));
+                IdentityModelEventSource.ShowPII = true;
             }
             else if (_env.IsProduction()) {
                 services.AddDbContext<CrownCleanAppContext>(
@@ -57,7 +60,7 @@ namespace CrownCleanApp.RestAPI
                         .UseSqlServer(_conf.GetConnectionString("defaultConnection")));
             }
 
-                    services.AddAuthentication(options =>
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,10 +73,12 @@ namespace CrownCleanApp.RestAPI
                 cfg.SaveToken = true;
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = _conf["JwtIssuer"],
-                    ValidAudience = _conf["JwtIssuer"],
+                    //ValidIssuer = _conf["JwtIssuer"],
+                    //ValidAudience = _conf["JwtIssuer"],
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["JwtKey"])),
-                    ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                    ClockSkew = TimeSpan.FromMinutes(2) // remove delay of token when expire
                 };
             });
 
@@ -93,7 +98,7 @@ namespace CrownCleanApp.RestAPI
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,6 +119,7 @@ namespace CrownCleanApp.RestAPI
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CrownCleanApp.Core.ApplicationService;
 using CrownCleanApp.Core.DomainService.Filtering;
 using CrownCleanApp.Core.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +25,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
+        [Authorize]
         public ActionResult<FilteredList<Vehicle>> Get([FromQuery] VehicleFilter filter)
         {
             try
@@ -55,6 +58,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<Vehicle> Get(int id)
         {
             try
@@ -65,6 +69,22 @@ namespace CrownCleanApp.RestAPI.Controllers
                 }
 
                 Vehicle vehicle = this._vehicleService.GetVehicleByID(id);
+
+                // Administrators can access the details of all vehicles
+                if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                {
+                    // Retrieve the id of the user, as stored in the JWT
+                    var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                    int.TryParse(userIDFromAuth, out int userID);
+
+                    // Check if the user is trying to access another user's order
+                    if (vehicle.User.ID != id)
+                    {
+                        return Forbid();
+                    }
+                }
+
 
                 if (vehicle == null)
                 {
@@ -84,6 +104,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // POST: api/Vehicles
         [HttpPost]
+        [Authorize]
         public ActionResult<Vehicle> Post([FromBody] Vehicle vehicle)
         {
             try
@@ -113,6 +134,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // PUT: api/Vehicles/5
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<Vehicle> Put([FromBody] Vehicle vehicle)
         {
             try
@@ -137,6 +159,7 @@ namespace CrownCleanApp.RestAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult<Vehicle> Delete(int id)
         {
             try

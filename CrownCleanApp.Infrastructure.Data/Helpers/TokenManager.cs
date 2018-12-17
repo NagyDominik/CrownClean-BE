@@ -36,6 +36,10 @@ namespace CrownCleanApp.Infrastructure.Data.Managers
             {
                 claims.Add(new Claim("role", "Administrator"));
             }
+            else
+            {
+                claims.Add(new Claim("role", "User"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
