@@ -57,7 +57,7 @@ namespace CrownCleanApp.Infrastructure.Data
             testUser2.PasswordSalt = t1pwSalt;
 
 
-            ctx.Users.Add(testUser);
+            ctx.Users.Add(testUser2);
 
             var admin = new User()
             {
