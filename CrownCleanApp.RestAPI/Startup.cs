@@ -71,10 +71,11 @@ namespace CrownCleanApp.RestAPI
                 {
                     ValidIssuer = _conf["JwtIssuer"],
                     ValidAudience = _conf["JwtIssuer"],
+                    ValidateIssuerSigningKey = true,
                     //ValidateIssuer = false,
                     //ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["JwtKey"])),
-                    ClockSkew = TimeSpan.FromMinutes(2) // remove delay of token when expire
+                    ClockSkew = TimeSpan.FromMinutes(2) 
                 };
             });
 
