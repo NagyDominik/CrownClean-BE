@@ -30,21 +30,32 @@ namespace CrownCleanApp.RestAPI.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0 || filter.ItemsPerPage > 0)
+                if (!string.IsNullOrEmpty(filter.ServicesSearch) || !string.IsNullOrEmpty(filter.DescriptionSearch) || filter.UserID > 0 || filter.ItemsPerPage > 0 || filter.UserID > 0)
                 {
                     if (filter.UserID > 0)
                     {
+                        var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                        int.TryParse(userIDFromAuth, out int userID);
+
+                        // Naughty user wants to access someone else's orders
+                        if (userID != filter.UserID)
+                        {
+                            return Forbid();
+                        }
+
                         Ok(_service.GetOrdersOfACustomer(filter, filter.UserID));
+                    }
+
+                    if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                    {
+                        return Forbid();
                     }
 
                     return Ok(_service.GetAllOrders(filter));
                 }
                 else
                 {
-                    if (filter.UserID > 0)
-                    {
-                        Ok(_service.GetOrdersOfACustomer(null, filter.UserID));
-                    }
 
                     return Ok(_service.GetAllOrders(null));
                 }

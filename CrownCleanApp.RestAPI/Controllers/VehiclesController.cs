@@ -31,22 +31,34 @@ namespace CrownCleanApp.RestAPI.Controllers
             try
             {
 
-                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize || filter.ItemsPerPage > 0)
+                if (!string.IsNullOrEmpty(filter.Brand) || !string.IsNullOrEmpty(filter.Type) || !string.IsNullOrEmpty(filter.UniqueID) || filter.FilterSize || filter.ItemsPerPage > 0 || filter.UserID > 0)
                 {
                     if (filter.UserID > 0)
                     {
+
+                        var userIDFromAuth = HttpContext.User.Claims.FirstOrDefault(n => n.Type == "id").Value;
+
+                        int.TryParse(userIDFromAuth, out int userID);
+
+                        // Naughty user wants to access someone else's vehicles
+                        if (userID != filter.UserID)
+                        {
+                            return Forbid();
+                        }
+
                         return Ok(_vehicleService.GetVehiclesOfACustomer(filter, filter.UserID));
+                    }
+
+                    if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
+                    {
+                        return Forbid();
                     }
 
                     return Ok(_vehicleService.GetAllVehicles(filter));
                 }
                 else
                 {
-                    if (filter.UserID > 0)
-                    {
-                        return Ok(_vehicleService.GetVehiclesOfACustomer(filter, filter.UserID));
-                    }
-
+           
                     return Ok(_vehicleService.GetAllVehicles(null));
                 }
             }
@@ -79,7 +91,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                     int.TryParse(userIDFromAuth, out int userID);
 
                     // Check if the user is trying to access another user's order
-                    if (vehicle.User.ID != vehicle.User.ID)
+                    if (vehicle.User.ID != userID)
                     {
                         return Forbid();
                     }
