@@ -54,7 +54,7 @@ namespace CrownCleanApp.Infrastructure.Data
             .HasMany(v => v.Orders)
             .WithOne(o => o.Vehicle);
         }
-
+        
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Order> Orders { get; set; }
