@@ -25,15 +25,15 @@ namespace CrownCleanApp.Infrastructure.Data
                     a => JsonConvert.DeserializeObject<List<string>>(a)
                 );
 
-            modelBuilder.Entity<Order>()
-               .HasOne(o => o.User)
-               .WithMany(u => u.Orders)
-               .HasForeignKey(o => o.UserID);
+            //modelBuilder.Entity<Order>()
+            //   .HasOne(o => o.User)
+            //   .WithMany(u => u.Orders)
+            //   .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Vehicle)
-                .WithMany(v => v.Orders)
-                .HasForeignKey(o => o.VehicleID);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Vehicle)
+            //    .WithMany(v => v.Orders)
+            //    .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Vehicles)
@@ -44,8 +44,9 @@ namespace CrownCleanApp.Infrastructure.Data
                 .HasMany(v => v.Orders)
                 .WithOne(o => o.Vehicle)
                 .OnDelete(DeleteBehavior.SetNull);
+
         }
-        
+
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Order> Orders { get; set; }
