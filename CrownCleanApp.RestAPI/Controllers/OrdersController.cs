@@ -44,7 +44,7 @@ namespace CrownCleanApp.RestAPI.Controllers
                             return Forbid();
                         }
 
-                        Ok(_service.GetOrdersOfACustomer(filter, filter.UserID));
+                        return Ok(_service.GetOrdersOfACustomer(filter, filter.UserID));
                     }
 
                     if (!string.Equals(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value, "Administrator"))
