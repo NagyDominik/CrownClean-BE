@@ -13,14 +13,10 @@ namespace CrownCleanApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<User>()
-            //    .HasMany(u => u.Orders)
-            //    .WithOne(o => o.User)
-            //    .OnDelete(DeleteBehavior.SetNull);
-
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Orders)
-                .WithOne(o => o.User);
+                .WithOne(o => o.User)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<User>()
                 .Property(p => p.Addresses)
@@ -29,32 +25,28 @@ namespace CrownCleanApp.Infrastructure.Data
                     a => JsonConvert.DeserializeObject<List<string>>(a)
                 );
 
-            modelBuilder.Entity<Order>()
-               .HasOne(o => o.User)
-               .WithMany(u => u.Orders)
-               .HasForeignKey(o => o.UserID);
+            //modelBuilder.Entity<Order>()
+            //   .HasOne(o => o.User)
+            //   .WithMany(u => u.Orders)
+            //   .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Vehicle)
-                .WithMany(v => v.Orders)
-                .HasForeignKey(o => o.VehicleID);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Vehicle)
+            //    .WithMany(v => v.Orders)
+            //    .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Vehicles)
                 .WithOne(v => v.User)
                 .OnDelete(DeleteBehavior.SetNull);
 
-
-            //modelBuilder.Entity<Vehicle>()
-            //    .HasMany(v => v.Orders)
-            //    .WithOne(o => o.Vehicle)
-            //    .OnDelete(DeleteBehavior.SetNull);
-
             modelBuilder.Entity<Vehicle>()
-            .HasMany(v => v.Orders)
-            .WithOne(o => o.Vehicle);
+                .HasMany(v => v.Orders)
+                .WithOne(o => o.Vehicle)
+                .OnDelete(DeleteBehavior.SetNull);
+
         }
-        
+
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Order> Orders { get; set; }
