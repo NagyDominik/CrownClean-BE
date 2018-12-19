@@ -13,10 +13,14 @@ namespace CrownCleanApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.Orders)
+            //    .WithOne(o => o.User)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Orders)
-                .WithOne(o => o.User)
-                .OnDelete(DeleteBehavior.SetNull);
+                .WithOne(o => o.User);
 
             modelBuilder.Entity<User>()
                 .Property(p => p.Addresses)
@@ -40,10 +44,15 @@ namespace CrownCleanApp.Infrastructure.Data
                 .WithOne(v => v.User)
                 .OnDelete(DeleteBehavior.SetNull);
 
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasMany(v => v.Orders)
+            //    .WithOne(o => o.Vehicle)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<Vehicle>()
-                .HasMany(v => v.Orders)
-                .WithOne(o => o.Vehicle)
-                .OnDelete(DeleteBehavior.SetNull);
+            .HasMany(v => v.Orders)
+            .WithOne(o => o.Vehicle);
         }
         
         public DbSet<User> Users { get; set; }
