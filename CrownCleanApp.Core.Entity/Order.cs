@@ -15,7 +15,7 @@ namespace CrownCleanApp.Core.Entity
         public Vehicle Vehicle { get; set; }
 
         public DateTime OrderDate { get; set; }
-        public DateTime ApproveDate { get; set; }
+        public DateTime? ApproveDate { get; set; }
         public string Services { get; set; }
         public string Description { get; set; }
         public bool AtAddress { get; set; }
