@@ -109,6 +109,7 @@ namespace CrownCleanApp.RestAPI
             else {
                 using (var scope = app.ApplicationServices.CreateScope()) {
                     var ctx = scope.ServiceProvider.GetService<CrownCleanAppContext>();
+                    ctx.Database.EnsureDeleted();
                     ctx.Database.EnsureCreated();
                 }
                 app.UseHsts();
